@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="./style.css" type="text/css" media="screen">
   <script src="./tinyosf.js"></script>
   <script>
+    var mode = 'html';
     function loadOSFexamples (url) {
       ajax = (window.ActiveXObject) ? new ActiveXObject("Microsoft.XMLHTTP") : (XMLHttpRequest && new XMLHttpRequest()) || null;
       ajaxTimeout = window.setTimeout(function () {
@@ -24,7 +25,7 @@
               
             } else {
               document.getElementById('OSF').innerHTML = '<!--'+"\n"+ajax.responseText+"\n"+'-->';
-              document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML));
+              document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML),mode);
             }
           }
         }
@@ -32,11 +33,26 @@
       ajax.open("GET", url, true);
       ajax.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
       ajax.send();
+      return false;
+    }
+    
+    function changeExportMode (mode) {
+      //window.location = window.location+"#"+mode;
+      location.hash = '#'+mode;
+      window.location.reload(true);
     }
     
     window.onload = function () {
+      if(location.hash.indexOf('md') !== -1) {
+        mode = 'md';
+      } else if(location.hash.indexOf('chapter') !== -1) {
+        mode = 'chapter';
+      }
+      if(location.hash.indexOf('html') === -1) {
+        document.getElementById('parsed').className += ' markdown';//.whiteSpace = 'pre';
+      }
       document.getElementById('OSF').style.display = 'none';
-      document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML));
+      document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML),mode);
     }
   </script>
 </head>
@@ -44,7 +60,8 @@
 <div id="header">
 <h1>tinyOSF.js</h1>
 <h2>a few lines of code to convert OSF to HTML</h2>
-<strong>load Examples: </strong><a href="#" onclick="loadOSFexamples('./osf_examples/mm100.osf');">mobileMacs 100</a> <a href="#" onclick="loadOSFexamples('./osf_examples/mm101.osf');"> mobileMacs 101</a> <a href="#" onclick="loadOSFexamples('./osf_examples/mm105.osf');">mobileMacs 105</a> <a href="#" onclick="loadOSFexamples('./osf_examples/wg039.osf');">Wikigeeks 39</a> <a href="#" onclick="loadOSFexamples('./osf_examples/wg040.osf');">Wikigeeks 40</a><br/>
+<strong>load Examples: </strong><a href="#" onclick="loadOSFexamples('./osf_examples/mm100.osf');return false;">mobileMacs 100</a> <a href="#" onclick="loadOSFexamples('./osf_examples/mm101.osf');return false;"> mobileMacs 101</a> <a href="#" onclick="loadOSFexamples('./osf_examples/mm105.osf');return false;">mobileMacs 105</a> <a href="#" onclick="loadOSFexamples('./osf_examples/wg039.osf');return false;">Wikigeeks 39</a> <a href="#" onclick="loadOSFexamples('./osf_examples/wg040.osf');return false;">Wikigeeks 40</a><br/>
+<strong>Export Mode: </strong><a href="#" onclick="changeExportMode('md');">Markdown</a> <a href="#" onclick="changeExportMode('html');">HTML</a> <a href="#" onclick="changeExportMode('chapter');">Chapter</a>
 </div>
 <code id="OSF"><!--
 1358966352 Sendungsbeginn #c

@@ -42,6 +42,11 @@ h1 {
   vertical-align: middle;
 }
 
+#parsed.markdown {
+  white-space: pre;
+  word-wrap: break-word;
+}
+
 #footer {
   margin-top: 35px;
   margin-bottom: 0px;

@@ -6,7 +6,7 @@
  * http://opensource.org/licenses/MIT
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.0.5
+ * Version: 0.0.6
  */
 
 /*jslint browser: true*/
@@ -108,7 +108,7 @@ function osfParser(string) {
   return output;
 }
 
-function osfExport(osf) {
+function osfExport(osf, mode) {
   "use strict";
   var i, osfline, line, tags, url, osfFirstTS, osfFirstHMS, osfTime, timeSec, timeHMS, parsed = '';
   for (i = 0; i < osf.length; i += 1) {
@@ -135,24 +135,42 @@ function osfExport(osf) {
     }
     tags = osfExtractTags(osfline[5], url);
     if (osfline !== undefined) {
-      if (typeof timeSec === 'number') {
-        if (url !== false) {
-          line = '<a data-tooltip="' + timeSec + '" ' + osfBuildTags(tags, true) + ' href="' + url + '">' + osfline[3].trim() + '</a>';
+      if ((mode === 'html')||(mode === undefined)) {
+        if (typeof timeSec === 'number') {
+          if (url !== false) {
+            line = '<a data-tooltip="' + timeSec + '" ' + osfBuildTags(tags, true) + ' href="' + url + '">' + osfline[3].trim() + '</a>';
+          } else {
+            line = '<span data-tooltip="' + timeSec + '" ' + osfBuildTags(tags, true) + '>' + osfline[3].trim() + '</span>';
+          }
         } else {
-          line = '<span data-tooltip="' + timeSec + '" ' + osfBuildTags(tags, true) + '>' + osfline[3].trim() + '</span>';
+          if (url !== false) {
+            line = '<a' + osfBuildTags(tags, true) + ' href="' + url + '">' + osfline[3].trim() + '</a>';
+          } else {
+            line = '<span' + osfBuildTags(tags, true) + '>' + osfline[3].trim() + '</span>';
+          }
         }
-      } else {
-        if (url !== false) {
-          line = '<a' + osfBuildTags(tags, true) + ' href="' + url + '">' + osfline[3].trim() + '</a>';
+        if (tags.indexOf('chapter') !== -1) {
+          line = '<h2>' + line + '<small>(' + timeHMS + ')</small></h2>';
+          parsed += line;
         } else {
-          line = '<span' + osfBuildTags(tags, true) + '>' + osfline[3].trim() + '</span>';
+          parsed += line + '; ';
         }
-      }
-      if (tags.indexOf('chapter') !== -1) {
-        line = '<h2>' + line + '<small>(' + timeHMS + ')</small></h2>';
-        parsed += line;
-      } else {
-        parsed += line + '; ';
+      } else if (mode === 'md') {
+        if (url !== false) {
+          line = '[' + osfline[3].trim() + '](' + url + ')';
+        } else {
+          line = osfline[3].trim();
+        }
+        if (tags.indexOf('chapter') !== -1) {
+          line = '\n#' + line + ' ^' + timeHMS + '  \n';
+          parsed += line;
+        } else {
+          parsed += line + '; ';
+        }
+      } else if (mode === 'chapter') {
+        if (tags.indexOf('chapter') !== -1) {
+          parsed += timeHMS + ' ' + osfline[3].trim() + '\n';
+        }
       }
     }
   }
