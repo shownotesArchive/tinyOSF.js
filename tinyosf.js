@@ -1,5 +1,5 @@
 function osfParser(string) {
-  var osfArray, i = 0, output = [], osfRegex = /(^([(\d{9,})(\u002D+)(\d+:\d+:\d+(\.\d*)?) ]*)?([^\u003C\u003E\u0023\n]+) *(\u003C[^\u003E]*\u003E)?((\s*\u0023[^\R\s]* ?)*)\n*)/gm;
+  var osfArray, i = 0, output = [], osfRegex = /(^([(\d{9,})(\u002D+)(\d+\u003A\d+\u003A\d+(\u002E\d*)?) ]*)?([^\u003C\u003E\u0023\n]+) *(\u003C[^\u003E]*\u003E)?((\s*\u0023[^\R\s]* ?)*)\n*)/gm;
   while ((osfArray = osfRegex.exec(string)) !== null) {
     output[i] = osfArray;
     i += 1;
@@ -8,7 +8,7 @@ function osfParser(string) {
 }
 
 function osfExport(osf) {
-  var i, osfline, line, tags, url, osfFirstTS, osfTime, time, parsed = '';
+  var i, osfline, line, tags, url, osfFirstTS, osfFirstHMS, osfTime, timeSec, timeHMS, parsed = '';
   for(i=0; i< osf.length; i+=1) {
     osfline = osf[i];
     osfTime = osfline[2];
@@ -18,9 +18,14 @@ function osfExport(osf) {
       if(osfFirstTS === undefined) {
         osfFirstTS = osfTime;
       }
-      time = osfCalculateTime(osfTime, osfFirstTS);
+      timeHMS = osfTimestampsToHMS(osfTime, osfFirstTS);
+      timeSec = osfTime-osfFirstTS;
     } else if(/(\d+:\d+:\d+(\.\d*)?)/.test(osfTime) !== null) {
-      time = osfTime;
+      if(osfFirstHMS === undefined) {
+        osfFirstHMS = osfTime;
+      }
+      timeHMS = osfTime;
+      timeSec = osfHMSToTimestamp(osfTime);
     }
     if(typeof osfline[4] === 'string') {
       url = osfline[4].replace(/\u003C/,'').replace(/\u003E/,'');
@@ -29,14 +34,21 @@ function osfExport(osf) {
     }
     tags = osfExtractTags(osfline[5],url);
     if(osfline !== undefined) {
-      if(url !== false) {
-        line = '<a'+osfBuildTags(tags,true)+'  href="'+url+'">'+osfline[3].trim()+'</a>';
+      if(typeof timeSec === 'number') {
+        if(url !== false) {
+          line = '<a data-tooltip="'+timeSec+'" '+osfBuildTags(tags,true)+' href="'+url+'">'+osfline[3].trim()+'</a>';
+        } else {
+          line = '<span data-tooltip="'+timeSec+'" '+osfBuildTags(tags,true)+'>'+osfline[3].trim()+'</span>';
+        }
       } else {
-        line = '<span'+osfBuildTags(tags,true)+'>'+osfline[3].trim()+'</span>';;
+        if(url !== false) {
+          line = '<a'+osfBuildTags(tags,true)+' href="'+url+'">'+osfline[3].trim()+'</a>';
+        } else {
+          line = '<span'+osfBuildTags(tags,true)+'>'+osfline[3].trim()+'</span>';
+        }
       }
-      
       if(tags.indexOf('chapter') !== -1) {
-        line = '<h2>'+line+'<small>('+time+')</small></h2>';
+        line = '<h2>'+line+'<small>('+timeHMS+')</small></h2>';
         parsed += line;
       } else {
         parsed += line+'; ';
@@ -101,7 +113,7 @@ function osfBuildTags(tagArray, withClass) {
   return output;
 }
 
-function osfCalculateTime(now,starttimestamp) {
+function osfTimestampsToHMS(now,starttimestamp) {
   var time = parseInt(now, 10) - parseInt(starttimestamp, 10),
       date, hours, minutes, seconds, returntime = '';
   hours = Math.floor(time / 3600);
@@ -111,4 +123,20 @@ function osfCalculateTime(now,starttimestamp) {
   returntime += (minutes < 10) ? '0' + minutes + ':' : minutes + ':';
   returntime += (seconds < 10) ? '0' + seconds : seconds;
   return returntime;
+}
+
+function osfHMSToTimestamp(hms) {
+  var time = 0, timeArray, regex = /((\d+\u003A)?(\d+\u003A)?(\d+)(\u002E\d+)?)/;
+  if(hms === undefined) {
+    return;
+  }
+  timeArray = regex.exec(hms.trim());
+  if(timeArray !== null) {
+    time += parseInt(timeArray[2],10)*3600;
+    time += parseInt(timeArray[3],10)*60;
+    time += parseInt(timeArray[4],10);
+  } else {
+    return undefined;
+  }
+  return time;
 }
