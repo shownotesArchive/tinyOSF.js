@@ -43,29 +43,34 @@ function osfExport(osf) {
 }
 
 function osfExtractTags(tagString,urlString) {
-  var tagArray = [], tagTempArray = [], i, urlTemp;
+  var tagArray = [], tagTempArray = [], i, urlTemp, tagTemp;
   tagTempArray = tagString.split(' ');
   for(i=0;i<tagTempArray.length;i+=1) {
-    if(tagTempArray[i] === '#c') {
-      tagTempArray[i] = 'chapter';
-    } else if(tagTempArray[i] === '#t') {
-      tagTempArray[i] = 'topic';
-    } else if(tagTempArray[i] === '#g') {
-      tagTempArray[i] = 'glossary';
-    } else if(tagTempArray[i] === '#l') {
-      tagTempArray[i] = 'link';
-    } else if(tagTempArray[i] === '#s') {
-      tagTempArray[i] = 'section';
-    } else if(tagTempArray[i] === '#v') {
-      tagTempArray[i] = 'video';
-    } else if(tagTempArray[i] === '#a') {
-      tagTempArray[i] = 'audio';
-    } else if(tagTempArray[i] === '#i') {
-      tagTempArray[i] = 'image';
-    } else if(tagTempArray[i] === '#q') {
-      tagTempArray[i] = 'quote';
+    tagTemp = tagTempArray[i].replace('#','').trim();
+    if(tagTemp.length === 1) {
+      if(tagTemp === 'c') {
+        tagTemp = 'chapter';
+      } else if(tagTemp === 't') {
+        tagTemp = 'topic';
+      } else if(tagTemp === 'g') {
+        tagTemp = 'glossary';
+      } else if(tagTemp === 'l') {
+        tagTemp = 'link';
+      } else if(tagTemp === 's') {
+        tagTemp = 'section';
+      } else if(tagTemp === 'v') {
+        tagTemp = 'video';
+      } else if(tagTemp === 'a') {
+        tagTemp = 'audio';
+      } else if(tagTemp === 'i') {
+        tagTemp = 'image';
+      } else if(tagTemp === 'q') {
+        tagTemp = 'quote';
+      }
     }
-    tagArray[i] = tagTempArray[i].trim();
+    if(tagTemp.length > 3) {
+      tagArray[i] = tagTemp;
+    }
   }
   if(urlString !== false) {
     urlTemp = urlString.split('/')[2];

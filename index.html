@@ -6,6 +6,34 @@
   <link rel="stylesheet" href="./style.css" type="text/css" media="screen">
   <script src="./tinyosf.js"></script>
   <script>
+    function loadOSFexamples (url) {
+      ajax = (window.ActiveXObject) ? new ActiveXObject("Microsoft.XMLHTTP") : (XMLHttpRequest && new XMLHttpRequest()) || null;
+      ajaxTimeout = window.setTimeout(function () {
+        ajax.abort();
+        console.log("AJAX Timeout Error");
+        alert('AJAX Timeout Error');
+      }, 6000);
+      ajax.onreadystatechange = function () {
+      
+        if (ajax.readyState === 4) {
+          if (ajax.status === 200) {
+            clearTimeout(ajaxTimeout);
+            if (ajax.status !== 200) {
+              console.log("AJAX Response Error");
+              alert('Could not connect');
+              
+            } else {
+              document.getElementById('OSF').innerHTML = '<!--'+"\n"+ajax.responseText+"\n"+'-->';
+              document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML));
+            }
+          }
+        }
+      };
+      ajax.open("POST", url, true);
+      ajax.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+      ajax.send();
+    }
+    
     window.onload = function () {
       document.getElementById('OSF').style.display = 'none';
       document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML));
@@ -13,7 +41,11 @@
   </script>
 </head>
 <body>
+<div id="header">
 <h1>tinyOSF.js</h1>
+<h2>a few lines of code to convert OSF to HTML</h2>
+<strong>load Examples: </strong><a href="#" onclick="loadOSFexamples('./osf_examples/mm100');">mobileMacs 100</a> <a href="#" onclick="loadOSFexamples('./osf_examples/mm101');"> mobileMacs 101</a> <a href="#" onclick="loadOSFexamples('./osf_examples/mm105');">mobileMacs 105</a> <a href="#" onclick="loadOSFexamples('./osf_examples/wg039');">Wikigeeks 39</a> <a href="#" onclick="loadOSFexamples('./osf_examples/wg040');">Wikigeeks 40</a>
+</div>
 <code id="OSF"><!--
 1358966352 Sendungsbeginn #c
 1358966353 Previously on mobileMacs 102 <https://soundcloud.com/david1701/> #t #a

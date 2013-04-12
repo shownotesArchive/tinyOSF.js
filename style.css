@@ -11,7 +11,7 @@ h1 {
   font-size: 40px;
 }
 
-#parsed, h1 {
+#parsed, #header {
   width: 80%;
   min-width: 400px;
   background-color:white;
@@ -20,6 +20,12 @@ h1 {
   margin: 25px auto;
   padding: 5px 25px;
   border-radius: 2px;
+}
+
+#header h2 {
+  font-size: 14px;
+  margin-top: -20px;
+  text-align: center;
 }
 
 #parsed * {
