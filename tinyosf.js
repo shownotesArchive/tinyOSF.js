@@ -1,5 +1,5 @@
 function osfParser(string) {
-  var osfArray, i = 0, output = [], osfRegex = /(^([(\d+)(\u002D+)]*) ([^\u003C\u003E\u0023\n]+) *(\u003C[^\u003E]*\u003E)?((\s*\u0023[^\R\s]* ?)*)\n*)/gm;
+  var osfArray, i = 0, output = [], osfRegex = /(^([(\d{9,})(\u002D+)(\d+:\d+:\d+(\.\d*)?) ]*)?([^\u003C\u003E\u0023\n]+) *(\u003C[^\u003E]*\u003E)?((\s*\u0023[^\R\s]* ?)*)\n*)/gm;
   while ((osfArray = osfRegex.exec(string)) !== null) {
     output[i] = osfArray;
     i += 1;
@@ -11,12 +11,16 @@ function osfExport(osf) {
   var i, osfline, line, tags, url, osfFirstTS, osfTime, time, parsed = '';
   for(i=0; i< osf.length; i+=1) {
     osfline = osf[i];
-    osfTime = parseInt(osfline[2],10);
-    if((osfFirstTS === undefined)&&(typeof osfTime === 'number')) {
-      osfFirstTS = osfTime;
-    }
-    if(typeof osfTime === 'number') {
+    osfTime = osfline[2];
+    
+    if(/(\d{9,})/.test(osfTime) !== false) {
+      osfTime = parseInt(osfTime,10);
+      if(osfFirstTS === undefined) {
+        osfFirstTS = osfTime;
+      }
       time = osfCalculateTime(osfTime, osfFirstTS);
+    } else if(/(\d+:\d+:\d+(\.\d*)?)/.test(osfTime) !== null) {
+      time = osfTime;
     }
     if(typeof osfline[4] === 'string') {
       url = osfline[4].replace(/\u003C/,'').replace(/\u003E/,'');
@@ -74,8 +78,10 @@ function osfExtractTags(tagString,urlString) {
   }
   if(urlString !== false) {
     urlTemp = urlString.split('/')[2];
-    urlTemp = urlTemp.split('.');
-    tagArray[i+1] = urlTemp[urlTemp.length-2]+urlTemp[urlTemp.length-1];
+    if(Array.isArray(urlTemp)) {
+      urlTemp = urlTemp.split('.');
+      tagArray[i+1] = urlTemp[urlTemp.length-2]+urlTemp[urlTemp.length-1];
+    }
   }
   return tagArray;
 }
