@@ -157,7 +157,7 @@ function osfExport(osf, mode) {
           }
         }
         if (tags.indexOf('chapter') !== -1) {
-          line = '<h2>' + line + '<small>(' + timeHMS + ')</small></h2>';
+          line = '<h2>' + line + ' <small>(' + timeHMS + ')</small></h2>';
           parsed += line;
         } else {
           parsed += line + '; ';
