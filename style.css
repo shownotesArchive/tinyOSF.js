@@ -28,6 +28,10 @@ h1 {
   text-align: center;
 }
 
+#parsedBox {
+  padding-top: 25px;
+}
+
 #parsedBox * {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }

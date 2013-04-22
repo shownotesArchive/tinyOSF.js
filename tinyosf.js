@@ -6,11 +6,11 @@
  * http://opensource.org/licenses/MIT
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.0.7
+ * Version: 0.0.8
  */
 
-/*jslint browser: true*/
-/*exported osfParser, osfExport*/
+/*jslint browser: true, white: true, indent: 2 */
+/*exported osfParser, osfExport */
 
 function osfExtractTags(tagString, urlString) {
   "use strict";
@@ -100,13 +100,25 @@ function osfHMSToTimestamp(hms) {
 
 function osfParser(string) {
   "use strict";
-  var osfArray, i = 0, output = [], 
+  var osfArray, i = 0, splitAt = false, output = [], 
   osfRegex = /(^([(\d{9,})(\u002D+)(\d+\u003A\d+\u003A\d+(\u002E\d*)?) ]*)?([\u0020-\u0022\u0024-\u003B\u003D\u003F-\u007D\u00C0-\u00FF„“@€!"§$%&\(\)=\?`´\+]+) *(\u003C[\S]*\u003E)?((\s*\u0023[\S]* ?)*)\n*)/gmi;
   //about this Regex:
   //^([(\d{9,})(\u002D+)(\d+\u003A\d+\u003A\d+(\u002E\d*)?) ]*)?                          => 1234567890 or - or 00:01:02[.000] or nothing at the beginning of the line
   //([\u0020-\u0022\u0024-\u003B\u003D\u003F-\u007D\u00C0-\u00FF„“@€!"§$%&\(\)=\?`´\+]+)  => a wide range of chars (excluding #,<,> and a few more) maybe this will change to ([^#<>]+) anytime
   //(\u003C[\S]*\u003E)?                                                                  => a string beginning with < and ending with > containing no whitespace or nothing
   //((\s*\u0023[\S]* ?)*)                                                                 => a string beginning with a whitespace, then a # and then some not whitespace chars or nothing
+  if(string.indexOf('/HEADER') !== -1) {
+    splitAt = '/HEADER';
+  } else if(string.indexOf('/HEAD') !== -1) {
+    splitAt = '/HEAD';
+  }
+  
+  if(typeof splitAt === 'string') {
+    string = string.split(splitAt,2)[1];
+  } else {
+    splitAt = string.split(/([(\d{9,})(\d+\u003A\d+\u003A\d+(\u002E\d*)?)]+\s\S)/i,2)[0];
+    string = string.split(splitAt)[1];
+  }
   
   while ((osfArray = osfRegex.exec(string)) !== null) {
     output[i] = osfArray;
