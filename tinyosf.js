@@ -6,7 +6,7 @@
  * http://opensource.org/licenses/MIT
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.0.8
+ * Version: 0.0.9
  */
 
 /*jslint browser: true, white: true, indent: 2 */
@@ -127,7 +127,78 @@ function osfParser(string) {
   return output;
 }
 
-function osfExport(osf, mode) {
+function osfExport_HTML(osfItem) {
+  var line, parsed;
+  if (typeof osfItem.timeSec === 'number') {
+    if (osfItem.url !== false) {
+      line = '<a data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true) + ' href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>';
+    } else {
+      line = '<span data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true) + '>' + osfItem.osfline[3].trim() + '</span>';
+    }
+  } else {
+    if (osfItem.url !== false) {
+      line = '<a' + osfBuildTags(osfItem.tags, true) + ' href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>';
+    } else {
+      line = '<span' + osfBuildTags(osfItem.tags, true) + '>' + osfItem.osfline[3].trim() + '</span>';
+    }
+  }
+  if (osfItem.tags.indexOf('chapter') !== -1) {
+    line = '<h2>' + line + ' <small>(' + osfItem.timeHMS + ')</small></h2>';
+    parsed = line;
+  } else {
+    parsed = line + '; ';
+  }
+  return parsed;
+}
+
+function osfExport_HTMLlist(osfItem) {
+  var line, parsed;
+  if (typeof osfItem.timeSec === 'number') {
+    if (osfItem.url !== false) {
+      line = '<a data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true) + ' href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>';
+    } else {
+      line = '<span data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true) + '>' + osfItem.osfline[3].trim() + '</span>';
+    }
+  } else {
+    if (osfItem.url !== false) {
+      line = '<a' + osfBuildTags(osfItem.tags, true) + ' href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>';
+    } else {
+      line = '<span' + osfBuildTags(osfItem.tags, true) + '>' + osfItem.osfline[3].trim() + '</span>';
+    }
+  }
+  if (osfItem.tags.indexOf('chapter') !== -1) {
+    line = '<h2>' + line + ' <small>(' + osfItem.timeHMS + ')</small></h2>';
+    parsed = line;
+  } else {
+    parsed = line + '; ';
+  }
+  return parsed;
+}
+
+function osfExport_Markdown(osfItem) {
+  var line, parsed;
+  if (osfItem.url !== false) {
+    line = '[' + osfItem.osfline[3].trim() + '](' + osfItem.url + ')';
+  } else {
+    line = osfItem.osfline[3].trim();
+  }
+  if (osfItem.tags.indexOf('chapter') !== -1) {
+    line = '\n#' + line + ' ^' + osfItem.timeHMS + '  \n';
+    parsed = line;
+  } else {
+    parsed = line + '; ';
+  }
+  return parsed;
+}
+
+function osfExport_Chapter(osfItem) {
+  if (osfItem.tags.indexOf('chapter') !== -1) {
+    return osfItem.timeHMS + ' ' + osfItem.osfline[3].trim() + '\n';
+  }
+  return '';
+}
+
+function osfExport(osf, modefunction) {
   "use strict";
   var i, osfline, line, tags, url, osfFirstTS, osfFirstHMS, osfTime, timeSec, timeHMS, parsed = '';
   for (i = 0; i < osf.length; i += 1) {
@@ -153,44 +224,8 @@ function osfExport(osf, mode) {
       url = false;
     }
     tags = osfExtractTags(osfline[5], url);
-    if (osfline !== undefined) {
-      if ((mode === 'html')||(mode === undefined)) {
-        if (typeof timeSec === 'number') {
-          if (url !== false) {
-            line = '<a data-tooltip="' + timeSec + '" ' + osfBuildTags(tags, true) + ' href="' + url + '">' + osfline[3].trim() + '</a>';
-          } else {
-            line = '<span data-tooltip="' + timeSec + '" ' + osfBuildTags(tags, true) + '>' + osfline[3].trim() + '</span>';
-          }
-        } else {
-          if (url !== false) {
-            line = '<a' + osfBuildTags(tags, true) + ' href="' + url + '">' + osfline[3].trim() + '</a>';
-          } else {
-            line = '<span' + osfBuildTags(tags, true) + '>' + osfline[3].trim() + '</span>';
-          }
-        }
-        if (tags.indexOf('chapter') !== -1) {
-          line = '<h2>' + line + ' <small>(' + timeHMS + ')</small></h2>';
-          parsed += line;
-        } else {
-          parsed += line + '; ';
-        }
-      } else if (mode === 'md') {
-        if (url !== false) {
-          line = '[' + osfline[3].trim() + '](' + url + ')';
-        } else {
-          line = osfline[3].trim();
-        }
-        if (tags.indexOf('chapter') !== -1) {
-          line = '\n#' + line + ' ^' + timeHMS + '  \n';
-          parsed += line;
-        } else {
-          parsed += line + '; ';
-        }
-      } else if (mode === 'chapter') {
-        if (tags.indexOf('chapter') !== -1) {
-          parsed += timeHMS + ' ' + osfline[3].trim() + '\n';
-        }
-      }
+    if ((osfline !== undefined)&&(modefunction !== undefined)) {
+      parsed += modefunction({"timeSec":timeSec,"timeHMS":timeHMS,"osfline":osfline,"url":url,"tags":tags});
     }
   }
   return parsed;

@@ -34,7 +34,13 @@
               
             } else {
               document.getElementById('OSF').innerHTML = '<!--'+"\n"+ajax.responseText+"\n"+'-->';
-              document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML),mode);
+              if((mode === 'html')||(mode === 'source')) {
+                document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_HTML);
+              } else if(mode === 'md') {
+                document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_Markdown);
+              } else if(mode === 'chapter') {
+                document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_Chapter);
+              }
             }
           }
         }
@@ -45,26 +51,40 @@
       return false;
     }
     
-    function changeExportMode (mode) {
-      location.hash = '#'+mode;
-      window.location.reload(true);
+    function changeExportMode (OSFmode) {
+      window.location.hash = '#'+OSFmode;
+      mode = OSFmode;
+      generateShownotes();
+      return false;
     }
     
-    window.onload = function () {
-      if(location.hash.indexOf('md') !== -1) {
+    window.onload = function() {generateShownotes()};
+    
+    function generateShownotes () {
+      var shownotes;
+      if(window.location.hash.indexOf('md') !== -1) {
         mode = 'md';
-      } else if(location.hash.indexOf('chapter') !== -1) {
+      } else if(window.location.hash.indexOf('chapter') !== -1) {
         mode = 'chapter';
       }
-      if((location.hash.indexOf('html') === -1)&&(location.hash !== '')) {
+
+      if((mode === 'html')||(mode === 'source')) {
+        shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_HTML);
+      } else if(mode === 'md') {
+        shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_Markdown);
+      } else if(mode === 'chapter') {
+        shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_Chapter);
+      }
+      
+      if((window.location.hash.indexOf('html') === -1)&&(window.location.hash !== '')) {
         document.getElementById('parsed').className += ' markdown';//.whiteSpace = 'pre';
       }
-      if(location.hash.indexOf('source') === -1) {
+      if(window.location.hash.indexOf('source') === -1) {
         document.getElementById('OSF').style.display = 'none';
-        document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML),mode);
+        document.getElementById('parsed').innerHTML = shownotes;
       } else {
         document.getElementById('OSF').style.display = 'none';
-        document.getElementById('parsed').innerHTML = escapeHtmlEntities(osfExport(osfParser(document.getElementById('OSF').innerHTML),mode));
+        document.getElementById('parsed').innerHTML = escapeHtmlEntities(shownotes);
       }
     }
   </script>
@@ -83,10 +103,10 @@
   <br/><br/>
   
   <strong>Export Mode: </strong>
-  <a href="#" onclick="changeExportMode('md');">Markdown</a>, 
-  <a href="#" onclick="changeExportMode('html');">HTML<i> (preview)</i></a>, 
-  <a href="#" onclick="changeExportMode('source');">HTML<i> (export)</i></a>, 
-  <a href="#" onclick="changeExportMode('chapter');">Chapter</a>
+  <a href="#" onclick="changeExportMode('md');return false;">Markdown</a>, 
+  <a href="#" onclick="changeExportMode('html');return false;">HTML<i> (preview)</i></a>, 
+  <a href="#" onclick="changeExportMode('source');return false;">HTML<i> (export)</i></a>, 
+  <a href="#" onclick="changeExportMode('chapter');return false;">Chapter</a>
 </div>
 <code id="OSF"><!--
 1358966352 Sendungsbeginn #c
