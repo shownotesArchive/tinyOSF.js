@@ -46,6 +46,10 @@ h1 {
   vertical-align: middle;
 }
 
+#parsedBox li {
+  list-style: none;
+}
+
 #parsed.markdown {
   white-space: pre;
   word-wrap: break-word;

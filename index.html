@@ -4,6 +4,7 @@
   <title>tinyOSF.js</title>
   <link rel="stylesheet" href="http://cdn.shownot.es/include-shownotes/shownotes.css" type="text/css" media="screen">
   <link rel="stylesheet" href="./style.css" type="text/css" media="screen">
+  <script src="./tinyosf_exportmodules.js"></script>
   <script src="./tinyosf.js"></script>
   <script>
     var mode = 'html';
@@ -38,6 +39,8 @@
                 document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_HTML);
               } else if(mode === 'md') {
                 document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_Markdown);
+              } else if(mode === 'wikigeeks') {
+                document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_HTMLlist);
               } else if(mode === 'chapter') {
                 document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_Chapter);
               }
@@ -66,12 +69,20 @@
         mode = 'md';
       } else if(window.location.hash.indexOf('chapter') !== -1) {
         mode = 'chapter';
+      } else if(window.location.hash.indexOf('wikigeeks') !== -1) {
+        mode = 'wikigeeks';
+      } else if(window.location.hash.indexOf('html') !== -1) {
+        mode = 'html';
+      } else {
+        mode = 'html';
       }
-
+      
       if((mode === 'html')||(mode === 'source')) {
         shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_HTML);
       } else if(mode === 'md') {
         shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_Markdown);
+      } else if(mode === 'wikigeeks') {
+        shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_HTMLlist);
       } else if(mode === 'chapter') {
         shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_Chapter);
       }
@@ -105,6 +116,7 @@
   <strong>Export Mode: </strong>
   <a href="#" onclick="changeExportMode('md');return false;">Markdown</a>, 
   <a href="#" onclick="changeExportMode('html');return false;">HTML<i> (preview)</i></a>, 
+  <a href="#" onclick="changeExportMode('wikigeeks');return false;">HTML list<i> (preview)</i></a>, 
   <a href="#" onclick="changeExportMode('source');return false;">HTML<i> (export)</i></a>, 
   <a href="#" onclick="changeExportMode('chapter');return false;">Chapter</a>
 </div>

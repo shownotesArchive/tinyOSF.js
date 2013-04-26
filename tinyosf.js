@@ -1,16 +1,16 @@
 /*
- * tinyOSF.js
+ * tinyosf.js
  *
  * Copyright 2013, Simon Waldherr - http://simon.waldherr.eu/
  * Released under the MIT Licence
  * http://opensource.org/licenses/MIT
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.0.9
+ * Version: 0.1.0
  */
 
 /*jslint browser: true, white: true, indent: 2 */
-/*exported osfParser, osfExport */
+/*exported osfParser, osfExport, osfBuildTags */
 
 function osfExtractTags(tagString, urlString) {
   "use strict";
@@ -127,80 +127,12 @@ function osfParser(string) {
   return output;
 }
 
-function osfExport_HTML(osfItem) {
-  var line, parsed;
-  if (typeof osfItem.timeSec === 'number') {
-    if (osfItem.url !== false) {
-      line = '<a data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true) + ' href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>';
-    } else {
-      line = '<span data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true) + '>' + osfItem.osfline[3].trim() + '</span>';
-    }
-  } else {
-    if (osfItem.url !== false) {
-      line = '<a' + osfBuildTags(osfItem.tags, true) + ' href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>';
-    } else {
-      line = '<span' + osfBuildTags(osfItem.tags, true) + '>' + osfItem.osfline[3].trim() + '</span>';
-    }
-  }
-  if (osfItem.tags.indexOf('chapter') !== -1) {
-    line = '<h2>' + line + ' <small>(' + osfItem.timeHMS + ')</small></h2>';
-    parsed = line;
-  } else {
-    parsed = line + '; ';
-  }
-  return parsed;
-}
-
-function osfExport_HTMLlist(osfItem) {
-  var line, parsed;
-  if (typeof osfItem.timeSec === 'number') {
-    if (osfItem.url !== false) {
-      line = '<a data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true) + ' href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>';
-    } else {
-      line = '<span data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true) + '>' + osfItem.osfline[3].trim() + '</span>';
-    }
-  } else {
-    if (osfItem.url !== false) {
-      line = '<a' + osfBuildTags(osfItem.tags, true) + ' href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>';
-    } else {
-      line = '<span' + osfBuildTags(osfItem.tags, true) + '>' + osfItem.osfline[3].trim() + '</span>';
-    }
-  }
-  if (osfItem.tags.indexOf('chapter') !== -1) {
-    line = '<h2>' + line + ' <small>(' + osfItem.timeHMS + ')</small></h2>';
-    parsed = line;
-  } else {
-    parsed = line + '; ';
-  }
-  return parsed;
-}
-
-function osfExport_Markdown(osfItem) {
-  var line, parsed;
-  if (osfItem.url !== false) {
-    line = '[' + osfItem.osfline[3].trim() + '](' + osfItem.url + ')';
-  } else {
-    line = osfItem.osfline[3].trim();
-  }
-  if (osfItem.tags.indexOf('chapter') !== -1) {
-    line = '\n#' + line + ' ^' + osfItem.timeHMS + '  \n';
-    parsed = line;
-  } else {
-    parsed = line + '; ';
-  }
-  return parsed;
-}
-
-function osfExport_Chapter(osfItem) {
-  if (osfItem.tags.indexOf('chapter') !== -1) {
-    return osfItem.timeHMS + ' ' + osfItem.osfline[3].trim() + '\n';
-  }
-  return '';
-}
-
 function osfExport(osf, modefunction) {
   "use strict";
-  var i, osfline, line, tags, url, osfFirstTS, osfFirstHMS, osfTime, timeSec, timeHMS, parsed = '';
+  var i, osfline, tags, url, osfFirstTS, osfFirstHMS, osfTime, timeSec, timeHMS, iteminfo = {}, parsed = '';
+  parsed += modefunction('', 'pre');
+  iteminfo.afterChapter = 0;
+  iteminfo.nextisChapter = false;
   for (i = 0; i < osf.length; i += 1) {
     osfline = osf[i];
     osfTime = osfline[2];
@@ -224,9 +156,22 @@ function osfExport(osf, modefunction) {
       url = false;
     }
     tags = osfExtractTags(osfline[5], url);
+    if (tags.indexOf('chapter') !== -1) {
+      iteminfo.afterChapter = 0;
+    } else {
+      iteminfo.afterChapter += 1;
+    }
+    if (osf[i+1] !== undefined) {
+      if(osfExtractTags(osf[i+1][5], false).indexOf('chapter') !== -1) {
+        iteminfo.nextisChapter = true;
+      } else {
+        iteminfo.nextisChapter = false;
+      }
+    }
     if ((osfline !== undefined)&&(modefunction !== undefined)) {
-      parsed += modefunction({"timeSec":timeSec,"timeHMS":timeHMS,"osfline":osfline,"url":url,"tags":tags});
+      parsed += modefunction({"timeSec":timeSec,"timeHMS":timeHMS,"osfline":osfline,"url":url,"tags":tags,"iteminfo":iteminfo});
     }
   }
+  parsed += modefunction('', 'post');
   return parsed;
 }

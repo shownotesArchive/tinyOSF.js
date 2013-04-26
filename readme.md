@@ -14,4 +14,4 @@ tinyOSF.js is a JavaScript implementation of the [OpenShownotesFormat-parser](ht
 
 ###Version
 
-0.0.8
+0.1.0
