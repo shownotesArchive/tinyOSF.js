@@ -6,7 +6,7 @@
  * http://opensource.org/licenses/MIT
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.1.0
+ * Version: 0.1.1
  */
 
 /*jslint browser: true, white: true, indent: 2 */
@@ -47,10 +47,10 @@ function osfExport_HTMLlist(osfItem, status) {
   "use strict";
   var line, parsed = '';
   if (status !== undefined) {
-    if(status === 'post') {
+    if (status === 'post') {
       return '</ol>';
-    } 
-    if(status === 'pre') {
+    }
+    if (status === 'pre') {
       return '';
     }
     return '';
