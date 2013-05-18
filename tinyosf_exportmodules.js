@@ -6,7 +6,7 @@
  * http://opensource.org/licenses/MIT
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.1.1
+ * Version: 0.1.2
  */
 
 /*jslint browser: true, white: true, indent: 2 */

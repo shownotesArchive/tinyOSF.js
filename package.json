@@ -1,0 +1,46 @@
+{
+  "name": "tinyOSF",
+  "version": "0.1.2",
+  "author": {
+    "name": "Simon Waldherr",
+    "email": "contact@simonwaldherr.de",
+    "url": "http://simon.waldherr.eu/"
+  },
+  "description": "a few lines of code to convert OSF to HTML",
+  "homepage": "https://github.com/shownotes/tinyOSF.js",
+  "maintainers": [
+    {
+      "name": "Simon Waldherr",
+      "email": "contact@simonwaldherr.de",
+      "web": "http://simon.waldherr.eu/"
+    }
+  ],
+  "contributors": [ 
+    {
+      "name": "Simon Waldherr",
+      "email": "contact@simonwaldherr.de",
+      "url": "http://simon.waldherr.eu/"
+    } 
+  ],
+  "demos": [
+    "./index.html"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shownotes/tinyOSF.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shownotes/tinyOSF.js/issues",
+    "email": "contact@simonwaldherr.de"
+  }
+  "main": "tinyosf.js",
+  "keywords": [
+    "osf",
+    "markup",
+    "parser",
+    "html",
+    "shownotes",
+    "podcast"
+  ],
+  "license": "MIT"
+}
