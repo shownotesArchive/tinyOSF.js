@@ -6,7 +6,7 @@
  * http://opensource.org/licenses/MIT
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.1.3
+ * Version: 0.1.4
  */
 
 /*jslint browser: true, white: true, indent: 2 */
@@ -120,7 +120,7 @@ function osfParser(string) {
   }
 
   if (typeof splitAt === 'string') {
-    string = string.split(splitAt, 2)[1];
+    string = string.split(splitAt, 2)[1].trim();
   } else {
     splitAt = string.split(/([(\d{9,})(\d+\u003A\d+\u003A\d+(\u002E\d*)?)]+\s*\S)/i, 3);
     splitAt = string.indexOf(splitAt[1]);
