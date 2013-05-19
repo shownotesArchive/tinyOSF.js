@@ -6,11 +6,11 @@
  * http://opensource.org/licenses/MIT
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.1.2
+ * Version: 0.1.3
  */
 
 /*jslint browser: true, white: true, indent: 2 */
-/*exported osfExport_HTML, osfExport_HTMLlist, osfExport_Markdown, osfExport_Chapter */
+/*exported osfExport_HTML, osfExport_HTMLlist, osfExport_NEWHTML, osfExport_Markdown, osfExport_Chapter, osfExport_Glossary */
 /*global osfBuildTags */
 
 //these functions are only examples, please consider making your own
@@ -43,16 +43,10 @@ function osfExport_HTML(osfItem, status) {
   return parsed;
 }
 
-function osfExport_HTMLlist(osfItem, status) {
+function osfExport_NEWHTML(osfItem, status) {
   "use strict";
-  var line, parsed = '';
+  var line, parsed;
   if (status !== undefined) {
-    if (status === 'post') {
-      return '</ol>';
-    }
-    if (status === 'pre') {
-      return '';
-    }
     return '';
   }
   if (typeof osfItem.timeSec === 'number') {
@@ -69,16 +63,10 @@ function osfExport_HTMLlist(osfItem, status) {
     }
   }
   if (osfItem.tags.indexOf('chapter') !== -1) {
-    line = '<h2><span>' + osfItem.timeHMS + '</span> ' + line + '</h2>';
+    line = '<h2>' + line + ' <small>(' + osfItem.timeHMS + ')</small></h2>';
     parsed = line;
   } else {
-    if (osfItem.iteminfo.afterChapter === 1) {
-      parsed += '<ol>';
-    }
-    parsed += '<li>' + line + '</li>';
-    if (osfItem.iteminfo.nextisChapter === true) {
-      parsed += '</ol>';
-    }
+    parsed = line + '; ';
   }
   return parsed;
 }

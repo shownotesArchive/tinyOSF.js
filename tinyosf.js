@@ -6,7 +6,7 @@
  * http://opensource.org/licenses/MIT
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.1.2
+ * Version: 0.1.3
  */
 
 /*jslint browser: true, white: true, indent: 2 */
@@ -107,7 +107,7 @@ function osfParser(string) {
   var osfArray, i = 0,
     splitAt = false,
     output = [],
-    osfRegex = /(^([(\d{8,})(\u002D+)(\d+\u003A\d+\u003A\d+(\u002E\d*)?)]*)?([\u0020-\u0022\u0024-\u003B\u003D\u003F-\u007D\u00C0-\u00FF„“@€!"§$%&\(\)=\?`´\+]+) *(\u003C[\S]*\u003E)?((\s*\u0023[\S]* ?)*)\n*)/gmi;
+    osfRegex = /(^([(\d{8,})(\u002D+)(\d+\u003A\d+\u003A\d+(\u002E\d*)?)]*)?\h*([\u0020-\u0022\u0024-\u003B\u003D\u003F-\u007D\u00C0-\u00FF„“@€!"§$%&\(\)=\?`´\+ ]+) *(\u003C[\S]*\u003E)?((\s*\u0023[\S]* ?)*)\n*)/gmi;
   //about this Regex:
   //^([(\d{8,})(\u002D+)(\d+\u003A\d+\u003A\d+(\u002E\d*)?)]*)?                           => 1234567890 or - or 00:01:02[.000] or nothing at the beginning of the line
   //([\u0020-\u0022\u0024-\u003B\u003D\u003F-\u007D\u00C0-\u00FF„“@€!"§$%&\(\)=\?`´\+]+)  => a wide range of chars (excluding #,<,> and a few more) maybe this will change to ([^#<>]+) anytime
@@ -122,12 +122,17 @@ function osfParser(string) {
   if (typeof splitAt === 'string') {
     string = string.split(splitAt, 2)[1];
   } else {
-    splitAt = string.split(/([(\d{9,})(\d+\u003A\d+\u003A\d+(\u002E\d*)?)]+\s\S)/i, 2)[0];
-    string = string.split(splitAt)[1];
+    splitAt = string.split(/([(\d{9,})(\d+\u003A\d+\u003A\d+(\u002E\d*)?)]+\s*\S)/i, 3);
+    splitAt = string.indexOf(splitAt[1]);
+    string = string.slice(splitAt);
   }
 
-  while ((osfArray = osfRegex.exec(string)) !== null) {
+  string = string.replace(/\s+/, ' ');
+  osfArray = osfRegex.exec(string);
+  while (osfArray !== null) {
+    osfArray[3] = (' '+osfArray[3]+' ').toString().replace(' "', ' &#8222;').replace('" ', '&#8221 ').trim();
     output[i] = osfArray;
+    osfArray = osfRegex.exec(string);
     i += 1;
   }
   return output;

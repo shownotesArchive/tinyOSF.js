@@ -28,6 +28,8 @@ function loadOSFexamples (url) {
           document.getElementById('OSF').innerHTML = '<!--'+"\n"+ajax.responseText+"\n"+'-->';
           if((mode === 'html')||(mode === 'source')) {
             document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_HTML);
+          } else if(mode === 'newhtml') {
+            document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_NEWHTML);
           } else if(mode === 'md') {
             document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_Markdown);
           } else if(mode === 'wikigeeks') {
@@ -63,9 +65,11 @@ function generateShownotes () {
   } else if(window.location.hash.indexOf('chapter') !== -1) {
     mode = 'chapter';
   } else if(window.location.hash.indexOf('glossary') !== -1) {
-   mode = 'glossary';
- } else if(window.location.hash.indexOf('wikigeeks') !== -1) {
+    mode = 'glossary';
+  } else if(window.location.hash.indexOf('wikigeeks') !== -1) {
     mode = 'wikigeeks';
+  } else if(window.location.hash.indexOf('newhtml') !== -1) {
+    mode = 'newhtml';
   } else if(window.location.hash.indexOf('html') !== -1) {
     mode = 'html';
   } else {
@@ -74,12 +78,12 @@ function generateShownotes () {
   
   if((mode === 'html')||(mode === 'source')) {
     shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_HTML);
+  } else if(mode === 'newhtml') {
+    shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_NEWHTML);
   } else if(mode === 'md') {
     shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_Markdown);
   } else if(mode === 'wikigeeks') {
     shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_HTMLlist);
-  } else if(mode === 'newhtml') {
-  shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_HTMLnew);
   } else if(mode === 'chapter') {
     shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_Chapter);
   } else if(mode === 'glossary') {
