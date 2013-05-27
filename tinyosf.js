@@ -130,7 +130,7 @@ function osfParser(string) {
   string = string.replace(/\s+/, ' ');
   osfArray = osfRegex.exec(string);
   while (osfArray !== null) {
-    osfArray[3] = (' '+osfArray[3]+' ').toString().replace(' "', ' &#8222;').replace('" ', '&#8221 ').trim();
+    osfArray[3] = (' '+osfArray[3]+' ').toString().replace(' "', ' &#8222;').replace('" ', '&#8220 ').trim();
     output[i] = osfArray;
     osfArray = osfRegex.exec(string);
     i += 1;
