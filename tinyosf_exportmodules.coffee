@@ -6,7 +6,7 @@
 # * http://opensource.org/licenses/MIT
 # *
 # * Github:  https://github.com/shownotes/tinyOSF.js/
-# * Version: 0.1.4
+# * Version: 0.1.5
 #
 
 #these functions are only examples, please consider making your own
@@ -17,14 +17,14 @@ osfExport_HTML = (osfItem, status) ->
   return ""  if status isnt `undefined`
   if typeof osfItem.timeSec is "number"
     if osfItem.url isnt false
-      line = "<a data-tooltip=\"" + osfItem.timeSec + "\" " + osfBuildTags(osfItem.tags, true) + " href=\"" + osfItem.url + "\">" + osfItem.osfline[3].trim() + "</a>"
+      line = "<a data-tooltip=\"" + osfItem.timeSec + "\" title=\"" + osfItem.timeHMS + ": " + osfItem.osfline[3].trim() + " (" + osfBuildTags(osfItem.tags, false, false) + ")\" " + osfBuildTags(osfItem.tags, true, true) + " href=\"" + osfItem.url + "\">" + osfItem.osfline[3].trim() + "</a>"
     else
-      line = "<span data-tooltip=\"" + osfItem.timeSec + "\" " + osfBuildTags(osfItem.tags, true) + ">" + osfItem.osfline[3].trim() + "</span>"
+      line = "<span data-tooltip=\"" + osfItem.timeSec + "\" " + osfBuildTags(osfItem.tags, true, true) + " title=\"" + osfItem.timeHMS + ": " + osfItem.osfline[3].trim() + " (" + osfBuildTags(osfItem.tags, false, false) + ")\">" + osfItem.osfline[3].trim() + "</span>"
   else
     if osfItem.url isnt false
-      line = "<a" + osfBuildTags(osfItem.tags, true) + " href=\"" + osfItem.url + "\">" + osfItem.osfline[3].trim() + "</a>"
+      line = "<a" + osfBuildTags(osfItem.tags, true, true) + " title=\"" + osfItem.osfline[3].trim() + " (" + osfBuildTags(osfItem.tags, false, false) + ")\" href=\"" + osfItem.url + "\">" + osfItem.osfline[3].trim() + "</a>"
     else
-      line = "<span" + osfBuildTags(osfItem.tags, true) + ">" + osfItem.osfline[3].trim() + "</span>"
+      line = "<span" + osfBuildTags(osfItem.tags, true, true) + " title=\"" + osfItem.osfline[3].trim() + " (" + osfBuildTags(osfItem.tags, false, false) + ")\">" + osfItem.osfline[3].trim() + "</span>"
   if osfItem.tags.indexOf("chapter") isnt -1
     line = "<h2>" + line + " <small>(" + osfItem.timeHMS + ")</small></h2>"
     parsed = line
@@ -38,14 +38,14 @@ osfExport_NEWHTML = (osfItem, status) ->
   return ""  if status isnt `undefined`
   if typeof osfItem.timeSec is "number"
     if osfItem.url isnt false
-      line = "<a data-tooltip=\"" + osfItem.timeSec + "\" " + osfBuildTags(osfItem.tags, true) + " href=\"" + osfItem.url + "\">" + osfItem.osfline[3].trim() + "</a>"
+      line = "<a data-tooltip=\"" + osfItem.timeSec + "\" " + osfBuildTags(osfItem.tags, true, true) + " href=\"" + osfItem.url + "\">" + osfItem.osfline[3].trim() + "</a>"
     else
-      line = "<span data-tooltip=\"" + osfItem.timeSec + "\" " + osfBuildTags(osfItem.tags, true) + ">" + osfItem.osfline[3].trim() + "</span>"
+      line = "<span data-tooltip=\"" + osfItem.timeSec + "\" " + osfBuildTags(osfItem.tags, true, true) + ">" + osfItem.osfline[3].trim() + "</span>"
   else
     if osfItem.url isnt false
-      line = "<a" + osfBuildTags(osfItem.tags, true) + " href=\"" + osfItem.url + "\">" + osfItem.osfline[3].trim() + "</a>"
+      line = "<a" + osfBuildTags(osfItem.tags, true, true) + " href=\"" + osfItem.url + "\">" + osfItem.osfline[3].trim() + "</a>"
     else
-      line = "<span" + osfBuildTags(osfItem.tags, true) + ">" + osfItem.osfline[3].trim() + "</span>"
+      line = "<span" + osfBuildTags(osfItem.tags, true, true) + ">" + osfItem.osfline[3].trim() + "</span>"
   if osfItem.tags.indexOf("chapter") isnt -1
     line = "<h2>" + line + " <small>(" + osfItem.timeHMS + ")</small></h2>"
     parsed = line
@@ -62,14 +62,14 @@ osfExport_HTMLlist = (osfItem, status) ->
     return ""
   if typeof osfItem.timeSec is "number"
     if osfItem.url isnt false
-      line = "<a data-tooltip=\"" + osfItem.timeSec + "\" " + osfBuildTags(osfItem.tags, true) + " href=\"" + osfItem.url + "\">" + osfItem.osfline[3].trim() + "</a>"
+      line = "<a data-tooltip=\"" + osfItem.timeSec + "\" " + osfBuildTags(osfItem.tags, true, true) + " href=\"" + osfItem.url + "\">" + osfItem.osfline[3].trim() + "</a>"
     else
-      line = "<span data-tooltip=\"" + osfItem.timeSec + "\" " + osfBuildTags(osfItem.tags, true) + ">" + osfItem.osfline[3].trim() + "</span>"
+      line = "<span data-tooltip=\"" + osfItem.timeSec + "\" " + osfBuildTags(osfItem.tags, true, true) + ">" + osfItem.osfline[3].trim() + "</span>"
   else
     if osfItem.url isnt false
-      line = "<a" + osfBuildTags(osfItem.tags, true) + " href=\"" + osfItem.url + "\">" + osfItem.osfline[3].trim() + "</a>"
+      line = "<a" + osfBuildTags(osfItem.tags, true, true) + " href=\"" + osfItem.url + "\">" + osfItem.osfline[3].trim() + "</a>"
     else
-      line = "<span" + osfBuildTags(osfItem.tags, true) + ">" + osfItem.osfline[3].trim() + "</span>"
+      line = "<span" + osfBuildTags(osfItem.tags, true, true) + ">" + osfItem.osfline[3].trim() + "</span>"
   if osfItem.tags.indexOf("chapter") isnt -1
     line = "<h2><span>" + osfItem.timeHMS + "</span> " + line + "</h2>"
     parsed = line
@@ -101,5 +101,5 @@ osfExport_Chapter = (osfItem, status) ->
 osfExport_Glossary = (osfItem, status) ->
   "use strict"
   return ""  if status isnt `undefined`
-  return osfItem.timeHMS + " " + "<a" + osfBuildTags(osfItem.tags, true) + " href=\"" + osfItem.url + "\">" + osfItem.osfline[3].trim() + "</a>" + "\n"  if osfItem.tags.indexOf("glossary") isnt -1
+  return osfItem.timeHMS + " " + "<a" + osfBuildTags(osfItem.tags, true, true) + " href=\"" + osfItem.url + "\">" + osfItem.osfline[3].trim() + "</a>" + "\n"  if osfItem.tags.indexOf("glossary") isnt -1
   ""

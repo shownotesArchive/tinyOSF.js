@@ -6,7 +6,7 @@
  * http://opensource.org/licenses/MIT
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.1.4
+ * Version: 0.1.5
  */
 
 /*jslint browser: true, white: true, indent: 2 */
@@ -23,15 +23,15 @@ function osfExport_HTML(osfItem, status) {
   }
   if (typeof osfItem.timeSec === 'number') {
     if (osfItem.url !== false) {
-      line = '<a data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true) + ' href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>';
+      line = '<a data-tooltip="' + osfItem.timeSec + '" title="' + osfItem.timeHMS + ': ' + osfItem.osfline[3].trim() + ' (' + osfBuildTags(osfItem.tags, false, false) + ')" ' + osfBuildTags(osfItem.tags, true, true) + ' href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>';
     } else {
-      line = '<span data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true) + '>' + osfItem.osfline[3].trim() + '</span>';
+      line = '<span data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true, true) + ' title="' + osfItem.timeHMS + ': ' + osfItem.osfline[3].trim() + ' (' + osfBuildTags(osfItem.tags, false, false) + ')">' + osfItem.osfline[3].trim() + '</span>';
     }
   } else {
     if (osfItem.url !== false) {
-      line = '<a' + osfBuildTags(osfItem.tags, true) + ' href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>';
+      line = '<a' + osfBuildTags(osfItem.tags, true, true) + ' title="' + osfItem.osfline[3].trim() + ' (' + osfBuildTags(osfItem.tags, false, false) + ')" href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>';
     } else {
-      line = '<span' + osfBuildTags(osfItem.tags, true) + '>' + osfItem.osfline[3].trim() + '</span>';
+      line = '<span' + osfBuildTags(osfItem.tags, true, true) + ' title="' + osfItem.osfline[3].trim() + ' (' + osfBuildTags(osfItem.tags, false, false) + ')">' + osfItem.osfline[3].trim() + '</span>';
     }
   }
   if (osfItem.tags.indexOf('chapter') !== -1) {
@@ -51,15 +51,15 @@ function osfExport_NEWHTML(osfItem, status) {
   }
   if (typeof osfItem.timeSec === 'number') {
     if (osfItem.url !== false) {
-      line = '<a data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true) + ' href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>';
+      line = '<a data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true, true) + ' href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>';
     } else {
-      line = '<span data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true) + '>' + osfItem.osfline[3].trim() + '</span>';
+      line = '<span data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true, true) + '>' + osfItem.osfline[3].trim() + '</span>';
     }
   } else {
     if (osfItem.url !== false) {
-      line = '<a' + osfBuildTags(osfItem.tags, true) + ' href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>';
+      line = '<a' + osfBuildTags(osfItem.tags, true, true) + ' href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>';
     } else {
-      line = '<span' + osfBuildTags(osfItem.tags, true) + '>' + osfItem.osfline[3].trim() + '</span>';
+      line = '<span' + osfBuildTags(osfItem.tags, true, true) + '>' + osfItem.osfline[3].trim() + '</span>';
     }
   }
   if (osfItem.tags.indexOf('chapter') !== -1) {
@@ -85,15 +85,15 @@ function osfExport_HTMLlist(osfItem, status) {
   }
   if (typeof osfItem.timeSec === 'number') {
     if (osfItem.url !== false) {
-      line = '<a data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true) + ' href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>';
+      line = '<a data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true, true) + ' href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>';
     } else {
-      line = '<span data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true) + '>' + osfItem.osfline[3].trim() + '</span>';
+      line = '<span data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true, true) + '>' + osfItem.osfline[3].trim() + '</span>';
     }
   } else {
     if (osfItem.url !== false) {
-      line = '<a' + osfBuildTags(osfItem.tags, true) + ' href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>';
+      line = '<a' + osfBuildTags(osfItem.tags, true, true) + ' href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>';
     } else {
-      line = '<span' + osfBuildTags(osfItem.tags, true) + '>' + osfItem.osfline[3].trim() + '</span>';
+      line = '<span' + osfBuildTags(osfItem.tags, true, true) + '>' + osfItem.osfline[3].trim() + '</span>';
     }
   }
   if (osfItem.tags.indexOf('chapter') !== -1) {
@@ -148,7 +148,7 @@ function osfExport_Glossary(osfItem, status) {
     return '';
   }
   if (osfItem.tags.indexOf('glossary') !== -1) {
-    return osfItem.timeHMS + ' ' + '<a' + osfBuildTags(osfItem.tags, true) + ' href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>' + '\n';
+    return osfItem.timeHMS + ' ' + '<a' + osfBuildTags(osfItem.tags, true, true) + ' href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>' + '\n';
   }
   return '';
 }
