@@ -12,7 +12,7 @@
 <body>
 <div id="header">
   <h1>tinyOSF.js</h1>
-  <h2>a few lines of code to convert OSF to HTML <i style="font-weight: 100;">version 0.1.5</i></h2>
+  <h2>a few lines of code to convert OSF to HTML <i style="font-weight: 100;">version 0.1.6</i></h2>
   <strong>load Examples: </strong>
   <span onclick="loadOSFexamples('./osf_examples/mm100.osf.txt');return false;">mobileMacs 100</span>, 
   <span onclick="loadOSFexamples('./osf_examples/mm101.osf.txt');return false;"> mobileMacs 101</span>, 
@@ -24,6 +24,7 @@
   <br/><br/>
   
   <strong>Export Mode: </strong>
+  <span onclick="changeExportMode('osf');return false;">OSF</span>, 
   <span onclick="changeExportMode('md');return false;">Markdown</span>, 
   <span onclick="changeExportMode('html');return false;">HTML<i> (preview)</i></span>, 
   <span onclick="changeExportMode('wikigeeks');return false;">HTML list<i> (preview)</i></span>, 

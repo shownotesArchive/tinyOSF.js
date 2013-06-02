@@ -26,19 +26,8 @@ function loadOSFexamples (url) {
           
         } else {
           document.getElementById('OSF').innerHTML = '<!--'+"\n"+ajax.responseText+"\n"+'-->';
-          if((mode === 'html')||(mode === 'source')) {
-            document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_HTML);
-          } else if(mode === 'newhtml') {
-            document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_NEWHTML);
-          } else if(mode === 'md') {
-            document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_Markdown);
-          } else if(mode === 'wikigeeks') {
-            document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_HTMLlist);
-          } else if(mode === 'chapter') {
-            document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_Chapter);
-          } else if(mode === 'glossary') {
-   document.getElementById('parsed').innerHTML = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_Glossary);
- }
+          shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExportModules[mode]);
+          document.getElementById('parsed').innerHTML = shownotes;
         }
       }
     }
@@ -72,28 +61,18 @@ function generateShownotes () {
     mode = 'newhtml';
   } else if(window.location.hash.indexOf('html') !== -1) {
     mode = 'html';
+  } else if(window.location.hash.indexOf('osf') !== -1) {
+    mode = 'osf';
   } else {
     mode = 'html';
   }
   
-  if((mode === 'html')||(mode === 'source')) {
-    shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_HTML);
-  } else if(mode === 'newhtml') {
-    shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_NEWHTML);
-  } else if(mode === 'md') {
-    shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_Markdown);
-  } else if(mode === 'wikigeeks') {
-    shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_HTMLlist);
-  } else if(mode === 'chapter') {
-    shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_Chapter);
-  } else if(mode === 'glossary') {
-  shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExport_Glossary);
-  }
+  shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExportModules[mode]);
   
   if((window.location.hash.indexOf('html') === -1)&&(window.location.hash !== '')) {
     document.getElementById('parsed').className += ' markdown';//.whiteSpace = 'pre';
   }
-  if(window.location.hash.indexOf('source') === -1) {
+  if((window.location.hash.indexOf('source') === -1)&&(window.location.hash.indexOf('osf') === -1)) {
     document.getElementById('OSF').style.display = 'none';
     document.getElementById('parsed').innerHTML = shownotes;
   } else {
