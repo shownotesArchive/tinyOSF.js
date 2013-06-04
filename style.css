@@ -55,6 +55,15 @@ h1 {
   word-wrap: break-word;
 }
 
+#expmode, #files {
+  margin-left: 15px;
+  display: inline-block;
+}
+
+#expmode span, #files span {
+  margin-left: 0px;
+}
+
 #footer {
   margin-top: 35px;
   margin-bottom: 0px;

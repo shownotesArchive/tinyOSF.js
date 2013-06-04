@@ -4,7 +4,9 @@
   <title>tinyOSF.js</title>
   <link rel="icon" href="./favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="http://cdn.shownot.es/include-shownotes/shownotes.css" type="text/css" media="screen">
+  <link rel="stylesheet" href="http://selfcss.org/baf/css/baf.css" type="text/css" media="screen">
   <link rel="stylesheet" href="./style.css" type="text/css" media="screen">
+  <script src="http://simonwaldherr.github.io/majaX.js/majax.js"></script>
   <script src="./tinyosf_exportmodules.js"></script>
   <script src="./tinyosf.js"></script>
   <script src="./script.js"></script>
@@ -14,24 +16,28 @@
   <h1>tinyOSF.js</h1>
   <h2>a few lines of code to convert OSF to HTML <i style="font-weight: 100;">version 0.1.6</i></h2>
   <strong>load Examples: </strong>
-  <span onclick="loadOSFexamples('./osf_examples/mm100.osf.txt');return false;">mobileMacs 100</span>, 
-  <span onclick="loadOSFexamples('./osf_examples/mm101.osf.txt');return false;"> mobileMacs 101</span>, 
-  <span onclick="loadOSFexamples('./osf_examples/mm105.osf.txt');return false;">mobileMacs 105</span>, 
-  <span onclick="loadOSFexamples('./osf_examples/mm108.osf.txt');return false;">mobileMacs 108</span>, 
-  <span onclick="loadOSFexamples('./osf_examples/mm110.osf.txt');return false;">mobileMacs 110</span>, 
-  <span onclick="loadOSFexamples('./osf_examples/wg039.osf.txt');return false;">Wikigeeks 39</span>, 
-  <span onclick="loadOSFexamples('./osf_examples/wg040.osf.txt');return false;">Wikigeeks 40</span>
+  <div id="files">
+    <span data-file="mm100" onclick="loadOSFexamples(this); return false;">mobileMacs 100</span>
+    <span data-file="mm101" onclick="loadOSFexamples(this); return false;">mobileMacs 101</span>
+    <span data-file="mm105" onclick="loadOSFexamples(this); return false;">mobileMacs 105</span>
+    <span data-file="mm108" onclick="loadOSFexamples(this); return false;">mobileMacs 108</span>
+    <span data-file="mm110" onclick="loadOSFexamples(this); return false;">mobileMacs 110</span>
+    <span data-file="wg039" onclick="loadOSFexamples(this); return false;">Wikigeeks 39</span>
+    <span data-file="wg040" onclick="loadOSFexamples(this); return false;">Wikigeeks 40</span>
+  </div>
   <br/><br/>
   
   <strong>Export Mode: </strong>
-  <span onclick="changeExportMode('osf');return false;">OSF</span>, 
-  <span onclick="changeExportMode('md');return false;">Markdown</span>, 
-  <span onclick="changeExportMode('html');return false;">HTML<i> (preview)</i></span>, 
-  <span onclick="changeExportMode('wikigeeks');return false;">HTML list<i> (preview)</i></span>, 
-  <span onclick="changeExportMode('newhtml');return false;">HTML new<i> (preview)</i></span>, 
-  <span onclick="changeExportMode('source');return false;">HTML<i> (export)</i></span>, 
-  <span onclick="changeExportMode('chapter');return false;">Chapter</span>
-  <span onclick="changeExportMode('glossary');return false;">Glossary</span>
+  <div id="expmode">
+    <span data-mode="osf"       onclick="changeExportMode(this); return false;">OSF</span>
+    <span data-mode="md"        onclick="changeExportMode(this); return false;">Markdown</span>
+    <span data-mode="html"      onclick="changeExportMode(this); return false;">HTML<i> (preview)</i></span>
+    <span data-mode="wikigeeks" onclick="changeExportMode(this); return false;">HTML list<i> (preview)</i></span>
+    <span data-mode="newhtml"   onclick="changeExportMode(this); return false;">HTML new<i> (preview)</i></span>
+    <span data-mode="source"    onclick="changeExportMode(this); return false;">HTML<i> (export)</i></span>
+    <span data-mode="chapter"   onclick="changeExportMode(this); return false;">Chapter</span>
+    <span data-mode="glossary"  onclick="changeExportMode(this); return false;">Glossary</span>
+  </div>
 </div>
 <code id="OSF"><!--
 1358966352 Sendungsbeginn #c
