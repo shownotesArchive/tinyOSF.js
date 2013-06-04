@@ -6,7 +6,7 @@
 # * http://opensource.org/licenses/MIT
 # *
 # * Github:  https://github.com/shownotes/tinyOSF.js/
-# * Version: 0.1.5
+# * Version: 0.1.6
 #
 
 osfExtractTags = (tagString, urlString) ->
