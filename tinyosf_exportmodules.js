@@ -143,7 +143,7 @@ var osfExportModules = {
       return '';
     }
     if (osfItem.tags.indexOf('glossary') !== -1) {
-      return osfItem.timeHMS + ' ' + '<a' + osfBuildTags(osfItem.tags, true, true) + ' href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>' + '\n';
+      return osfItem.timeHMS + ' ' + '<a href="' + osfItem.url + '">' + osfItem.osfline[3].trim() + '</a>' + '\n';
     }
     return '';
   },
