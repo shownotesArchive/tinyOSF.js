@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="http://selfcss.org/baf/css/baf.css" type="text/css" media="screen">
   <link rel="stylesheet" href="./style.css" type="text/css" media="screen">
   <script src="http://simonwaldherr.github.io/majaX.js/majax.js"></script>
+  <script src="./diff_match_patch_uncompressed.js"></script>
   <script src="./tinyosf_exportmodules.js"></script>
   <script src="./tinyosf.js"></script>
   <script src="./script.js"></script>
@@ -30,6 +31,7 @@
   <strong>Export Mode: </strong>
   <div id="expmode">
     <span data-mode="osf"       onclick="changeExportMode(this); return false;">OSF</span>
+    <span data-mode="diff"      onclick="changeExportMode(this); return false;">Diff</span>
     <span data-mode="md"        onclick="changeExportMode(this); return false;">Markdown</span>
     <span data-mode="html"      onclick="changeExportMode(this); return false;">HTML<i> (preview)</i></span>
     <span data-mode="wikigeeks" onclick="changeExportMode(this); return false;">HTML list<i> (preview)</i></span>

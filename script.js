@@ -46,6 +46,21 @@ function changeExportMode (e) {
   return false;
 }
 
+var dmp = new diff_match_patch();
+function diffOSF() {
+  var text1, text2, ms_start, d, ms_end, ds;
+  text1 = document.getElementById('OSF').innerHTML;
+  text2 = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExportModules['osf']);
+  dmp.Diff_Timeout = 5;
+  dmp.Diff_EditCost = 8;
+  ms_start = (new Date()).getTime();
+  d = dmp.diff_main(text1, text2);
+  ms_end = (new Date()).getTime();
+  dmp.diff_cleanupEfficiency(d);
+  ds = dmp.diff_prettyHtml(d);
+  return ds + '<BR>Time: ' + (ms_end - ms_start) / 1000 + 's';
+}
+
 window.onload = function() {generateShownotes()};
 
 function generateShownotes () {
@@ -62,6 +77,8 @@ function generateShownotes () {
     mode = 'newhtml';
   } else if(window.location.hash.indexOf('html') !== -1) {
     mode = 'html';
+  } else if(window.location.hash.indexOf('diff') !== -1) {
+    mode = 'diff';
   } else if(window.location.hash.indexOf('osf') !== -1) {
     mode = 'osf';
   } else {
@@ -82,10 +99,17 @@ function generateShownotes () {
     buttons[i].className = 'baf grey bluehover';
   }
   
-  shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExportModules[mode]);
+  if (mode === 'diff') {
+    shownotes = diffOSF();
+  } else {
+    shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExportModules[mode]);
+  }
+  
   
   if((window.location.hash.indexOf('html') === -1)&&(window.location.hash !== '')) {
-    document.getElementById('parsed').className += ' markdown';//.whiteSpace = 'pre';
+    document.getElementById('parsed').className = ' markdown';//.whiteSpace = 'pre';
+  } else {
+    document.getElementById('parsed').className = ' ';
   }
   if((window.location.hash.indexOf('source') === -1)&&(window.location.hash.indexOf('osf') === -1)) {
     document.getElementById('OSF').style.display = 'none';
