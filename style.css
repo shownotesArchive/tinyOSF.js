@@ -62,6 +62,8 @@ h1 {
 
 #expmode span, #files span {
   margin-left: 0px;
+  font-size: 10px;
+  padding: 5px;
 }
 
 #footer {
