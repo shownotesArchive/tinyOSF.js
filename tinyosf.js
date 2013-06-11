@@ -6,7 +6,7 @@
  * http://opensource.org/licenses/MIT
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.1.6
+ * Version: 0.2.0
  */
 
 /*jslint browser: true, white: true, indent: 2 */
@@ -128,7 +128,7 @@ function osfParser(string) {
     timeSec,
     osfFirstTS,
     osfFirstHMS,
-    osfRegex = /(^([(\d{8,})(\u002D+)((\d+\u003A)?\d+\u003A\d+(\u002E\d+)?)]*)?\h*([\u0020-\u0022\u0024-\u003B\u003D\u003F-\u007D\u00C0-\u00FF\u2013„“@€!"§$%&\(\)=\?`´\+ ]+) *(\u003C[\S]*\u003E)?((\s*\u0023[\S]* ?)*)\n*)/gmi;
+    osfRegex = /(^([(\d{8,})((\d+\u003A)?\d+\u003A\d+(\u002E\d+)?)]*)?\h*([\u0020-\u0022\u0024-\u003B\u003D\u003F-\u007D\u00C0-\u00FF\u2013„“@€!"§$%&\(\)=\?`´\+ ]+) *(\u003C[\S]*\u003E)?((\s*\u0023[\S]* ?)*)\n*)/gmi;
   //about this Regex:
   //^([(\d{8,})(\u002D+)(\d+\u003A\d+\u003A\d+(\u002E\d*)?)]*)?                                => 1234567890 or - or 00:01:02[.000] or nothing at the beginning of the line
   //([\u0020-\u0022\u0024-\u003B\u003D\u003F-\u007D\u00C0-\u00FF\u2013„“@€!"§$%&\(\)=\?`´\+]+) => a wide range of chars (excluding #,<,> and a few more) maybe this will change to ([^#<>]+) anytime
@@ -149,11 +149,11 @@ function osfParser(string) {
     string = string.slice(splitAt);
   }
 
-  string = string.replace(/\s+/, ' ');
+  string = '\n'+string.replace(/\s+/, ' ')+'\n';
   osfArray = osfRegex.exec(string);
   while (osfArray !== null) {
     osfArray[3] = osfArray[3].trim();
-    if (osfArray[3].replace(/[\s\d\.:-]+/gmi,'').length > 2) {
+    if (osfArray[3].replace(/[\s\d\.:\-]+/gmi,'').length > 2) {
       osfArray[0] = osfArray[0].trim();
       
       osfTime = osfArray[2];
@@ -180,18 +180,16 @@ function osfParser(string) {
       
       osfArray[6] = 0;
       if(/^[\-\–\—]+/.test(osfArray[3])) {
-        osfArray[7] = 0;
         rank = /^[\-\–\—]+/.exec(osfArray[3]);
         if(rank !== undefined) {
           if(rank[0] !== undefined) {
             osfArray[6] = rank[0].length;
-            osfArray[3] = osfArray[3].substr(osfArray[7]).trim();
+            osfArray[3] = osfArray[3].substr(osfArray[6]).trim();
           }
         }
       }
       osfArray[3] = (' '+escapeHtml(osfArray[3])+' ').toString().replace(' "', ' &#8222;').replace('" ', '&#8220 ').trim();
       output[i] = osfArray;
-      console.log(osfArray);
       i += 1;
     }
     osfArray = osfRegex.exec(string);
@@ -210,15 +208,15 @@ function osfParser(string) {
 
 function osfExport(osf, modefunction) {
   "use strict";
-  var i, osfline, tags, url, timeSec, timeHMS, iteminfo = {}, parsed = '';
+  var i, osfline, osftext, tags, url, timeSec, timeHMS, iteminfo = {}, parsed = '', ranks = {};
   parsed += modefunction('', 'pre');
   iteminfo.afterChapter = 0;
   iteminfo.nextisChapter = false;
   for (i = 0; i < osf.length; i += 1) {
     osfline = osf[i];
-
     timeHMS = osfline[1];
     timeSec = osfline[2];
+    osftext = osfline[3];
 
     if (typeof osfline[4] === 'string') {
       url = osfline[4].replace(/\u003C/, '').replace(/\u003E/, '');
@@ -238,14 +236,22 @@ function osfExport(osf, modefunction) {
         iteminfo.nextisChapter = false;
       }
     }
+    
+    ranks.prev = osf[i-1] !== undefined ? osf[i-1][6] : 0;
+    ranks.curr = osf[i][6];
+    ranks.next = osf[i+1] !== undefined ? osf[i+1][6] : 0;
+    
+    
     if ((osfline !== undefined) && (modefunction !== undefined)) {
       parsed += modefunction({
         "timeSec": timeSec,
         "timeHMS": timeHMS,
+        "osftext": osftext,
         "osfline": osfline,
         "url": url,
         "tags": tags,
-        "iteminfo": iteminfo
+        "iteminfo": iteminfo,
+        "rank": ranks
       });
     }
   }

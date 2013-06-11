@@ -11,6 +11,10 @@ h1 {
   font-size: 40px;
 }
 
+h2 {
+  font-size: 23px;
+}
+
 #parsedBox, #header {
   width: 80%;
   min-width: 400px;
