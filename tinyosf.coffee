@@ -6,7 +6,7 @@
 # * http://opensource.org/licenses/MIT
 # *
 # * Github:  https://github.com/shownotes/tinyOSF.js/
-# * Version: 0.1.6
+# * Version: 0.2.0
 #
 
 osfExtractTags = (tagString, urlString) ->
@@ -356,7 +356,13 @@ osfParser = (string) ->
   i = 0
   splitAt = false
   output = []
-  osfRegex = /(^([(\d{8,})(\u002D+)(\d+\u003A\d+\u003A\d+(\u002E\d*)?)]*)?\h*([\u0020-\u0022\u0024-\u003B\u003D\u003F-\u007D\u00C0-\u00FF\u2013„“@€!"§$%&\(\)=\?`´\+ ]+) *(\u003C[\S]*\u003E)?((\s*\u0023[\S]* ?)*)\n*)/g
+  rank = undefined
+  osfTime = undefined
+  timeHMS = undefined
+  timeSec = undefined
+  osfFirstTS = undefined
+  osfFirstHMS = undefined
+  osfRegex = /(^([(\d{8,})((\d+\u003A)?\d+\u003A\d+(\u002E\d+)?)]*)?\h*([\u0020-\u0022\u0024-\u003B\u003D\u003F-\u007D\u00C0-\u00FF\u2013„“@€!"§$%&\(\)=\?`´\+ ]+) *(\u003C[\S]*\u003E)?((\s*\u0023[\S]* ?)*)\n*)/g
 
   #about this Regex:
   #^([(\d{8,})(\u002D+)(\d+\u003A\d+\u003A\d+(\u002E\d*)?)]*)?                                => 1234567890 or - or 00:01:02[.000] or nothing at the beginning of the line
@@ -369,46 +375,73 @@ osfParser = (string) ->
   if typeof splitAt is "string"
     string = string.split(splitAt, 2)[1].trim()
   else
-    splitAt = string.split(/([(\d{9,})(\d+\u003A\d+\u003A\d+(\u002E\d*)?)]+\s*\S)/i, 3)
+    splitAt = string.split(/([(\d{8,})((\d+\u003A)?\d+\u003A\d+(\u002E\d+)?)]+\s*\S)/i, 3)
     splitAt = string.indexOf(splitAt[1])
     string = string.slice(splitAt)
-  string = string.replace(/\s+/, " ")
+  string = "\n" + string.replace(/\s+/, " ") + "\n"
   osfArray = osfRegex.exec(string)
   while osfArray isnt null
-    osfArray[3] = (" " + escapeHtml(osfArray[3]) + " ").toString().replace(" \"", " &#8222;").replace("\" ", "&#8220 ").trim()
-    output[i] = osfArray
+    osfArray[3] = osfArray[3].trim()
+    if osfArray[3].replace(/[\s\d\.:\-]+/g, "").length > 2
+      osfArray[0] = osfArray[0].trim()
+      osfTime = osfArray[2]
+      if /(\d{8,})/.test(osfTime)
+        osfTime = parseInt(osfTime, 10)
+        osfFirstTS = osfTime  if osfFirstTS is `undefined`
+        timeHMS = osfTimestampsToHMS(osfTime, osfFirstTS)
+        timeSec = osfTime - osfFirstTS
+      else if /((\d+\u003A)?\d+\u003A\d+(\u002E\d+)?)/.test(osfTime)
+        osfFirstHMS = osfTime  if osfFirstHMS is `undefined`
+        timeHMS = osfTime
+        timeSec = osfHMSToTimestamp(osfTime)
+      else
+        timeHMS = false
+        timeSec = false
+      osfArray[1] = timeHMS #HH:MM:SS
+      osfArray[2] = timeSec #Seconds
+      osfArray[6] = 0
+      if /^[\-\–\—]+/.test(osfArray[3])
+        rank = /^[\-\–\—]+/.exec(osfArray[3])
+        if rank isnt `undefined`
+          if rank[0] isnt `undefined`
+            osfArray[6] = rank[0].length
+            osfArray[3] = osfArray[3].substr(osfArray[6]).trim()
+      osfArray[3] = (" " + escapeHtml(osfArray[3]) + " ").toString().replace(" \"", " &#8222;").replace("\" ", "&#8220 ").trim()
+      output[i] = osfArray
+      i += 1
     osfArray = osfRegex.exec(string)
-    i += 1
+
+  #
+  #  [i][0] = original item line
+  #  [i][1] = time in HH:MM:SS
+  #  [i][2] = time in sec
+  #  [i][3] = clean text
+  #  [i][4] = URL
+  #  [i][5] = Tags
+  #  [i][6] = Rank
+  #  
   output
 osfExport = (osf, modefunction) ->
   "use strict"
   i = undefined
   osfline = undefined
+  osftext = undefined
   tags = undefined
   url = undefined
-  osfFirstTS = undefined
-  osfFirstHMS = undefined
-  osfTime = undefined
   timeSec = undefined
   timeHMS = undefined
   iteminfo = {}
   parsed = ""
+  ranks = {}
   parsed += modefunction("", "pre")
   iteminfo.afterChapter = 0
   iteminfo.nextisChapter = false
   i = 0
   while i < osf.length
     osfline = osf[i]
-    osfTime = osfline[2]
-    if /(\d{9,})/.test(osfTime) isnt false
-      osfTime = parseInt(osfTime, 10)
-      osfFirstTS = osfTime  if osfFirstTS is `undefined`
-      timeHMS = osfTimestampsToHMS(osfTime, osfFirstTS)
-      timeSec = osfTime - osfFirstTS
-    else if /(\d+:\d+:\d+(\.\d*)?)/.test(osfTime) isnt null
-      osfFirstHMS = osfTime  if osfFirstHMS is `undefined`
-      timeHMS = osfTime
-      timeSec = osfHMSToTimestamp(osfTime)
+    timeHMS = osfline[1]
+    timeSec = osfline[2]
+    osftext = osfline[3]
     if typeof osfline[4] is "string"
       url = osfline[4].replace(/\u003C/, "").replace(/\u003E/, "")
     else
@@ -423,14 +456,19 @@ osfExport = (osf, modefunction) ->
         iteminfo.nextisChapter = true
       else
         iteminfo.nextisChapter = false
+    ranks.prev = (if osf[i - 1] isnt `undefined` then osf[i - 1][6] else 0)
+    ranks.curr = osf[i][6]
+    ranks.next = (if osf[i + 1] isnt `undefined` then osf[i + 1][6] else 0)
     if (osfline isnt `undefined`) and (modefunction isnt `undefined`)
       parsed += modefunction(
         timeSec: timeSec
         timeHMS: timeHMS
+        osftext: osftext
         osfline: osfline
         url: url
         tags: tags
         iteminfo: iteminfo
+        rank: ranks
       )
     i += 1
   parsed += modefunction("", "post")
