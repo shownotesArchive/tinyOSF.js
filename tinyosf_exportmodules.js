@@ -6,15 +6,15 @@
  * http://opensource.org/licenses/MIT
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.2.0
+ * Version: 0.3.0
  */
 
 /*jslint browser: true, white: true, indent: 2 */
-/*global osfBuildTags */
+/*global tinyosf.buildTags */
 
 //these functions are only examples, please consider making your own
 
-var osfExportModules = {
+var osfExportTemp, osfExportModules = {
   html: function (osfItem, status) {
     "use strict";
     var line, parsed;
@@ -23,15 +23,15 @@ var osfExportModules = {
     }
     if (typeof osfItem.timeSec === 'number') {
       if (osfItem.url !== false) {
-        line = '<a data-tooltip="' + osfItem.timeSec + '" title="' + osfItem.timeHMS + ': ' + osfItem.osftext + ' (' + osfBuildTags(osfItem.tags, false, false) + ')" ' + osfBuildTags(osfItem.tags, true, true) + ' href="' + osfItem.url + '">' + osfItem.osftext + '</a>';
+        line = '<a data-tooltip="' + osfItem.timeSec + '" title="' + osfItem.timeHMS + ': ' + osfItem.osftext + ' (' + tinyosf.buildTags(osfItem.tags, 1, false) + ')" ' + tinyosf.buildTags(osfItem.tags, 2, true) + ' href="' + osfItem.url + '">' + osfItem.osftext + '</a>';
       } else {
-        line = '<span data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true, true) + ' title="' + osfItem.timeHMS + ': ' + osfItem.osftext + ' (' + osfBuildTags(osfItem.tags, false, false) + ')">' + osfItem.osftext + '</span>';
+        line = '<span data-tooltip="' + osfItem.timeSec + '" ' + tinyosf.buildTags(osfItem.tags, 2, true) + ' title="' + osfItem.timeHMS + ': ' + osfItem.osftext + ' (' + tinyosf.buildTags(osfItem.tags, 1, false) + ')">' + osfItem.osftext + '</span>';
       }
     } else {
       if (osfItem.url !== false) {
-        line = '<a' + osfBuildTags(osfItem.tags, true, true) + ' title="' + osfItem.osftext + ' (' + osfBuildTags(osfItem.tags, false, false) + ')" href="' + osfItem.url + '">' + osfItem.osftext + '</a>';
+        line = '<a' + tinyosf.buildTags(osfItem.tags, 2, true) + ' title="' + osfItem.osftext + ' (' + tinyosf.buildTags(osfItem.tags, 1, false) + ')" href="' + osfItem.url + '">' + osfItem.osftext + '</a>';
       } else {
-        line = '<span' + osfBuildTags(osfItem.tags, true, true) + ' title="' + osfItem.osftext + ' (' + osfBuildTags(osfItem.tags, false, false) + ')">' + osfItem.osftext + '</span>';
+        line = '<span' + tinyosf.buildTags(osfItem.tags, 2, true) + ' title="' + osfItem.osftext + ' (' + tinyosf.buildTags(osfItem.tags, 1, false) + ')">' + osfItem.osftext + '</span>';
       }
     }
     if (osfItem.tags.indexOf('chapter') !== -1) {
@@ -50,15 +50,15 @@ var osfExportModules = {
     }
     if (typeof osfItem.timeSec === 'number') {
       if (osfItem.url !== false) {
-        line = '<a data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true, true) + ' href="' + osfItem.url + '">' + osfItem.osftext + '</a>';
+        line = '<a data-tooltip="' + osfItem.timeSec + '" ' + tinyosf.buildTags(osfItem.tags, 2, true) + ' href="' + osfItem.url + '">' + osfItem.osftext + '</a>';
       } else {
-        line = '<span data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true, true) + '>' + osfItem.osftext + '</span>';
+        line = '<span data-tooltip="' + osfItem.timeSec + '" ' + tinyosf.buildTags(osfItem.tags, 2, true) + '>' + osfItem.osftext + '</span>';
       }
     } else {
       if (osfItem.url !== false) {
-        line = '<a' + osfBuildTags(osfItem.tags, true, true) + ' href="' + osfItem.url + '">' + osfItem.osftext + '</a>';
+        line = '<a' + tinyosf.buildTags(osfItem.tags, 2, true) + ' href="' + osfItem.url + '">' + osfItem.osftext + '</a>';
       } else {
-        line = '<span' + osfBuildTags(osfItem.tags, true, true) + '>' + osfItem.osftext + '</span>';
+        line = '<span' + tinyosf.buildTags(osfItem.tags, 2, true) + '>' + osfItem.osftext + '</span>';
       }
     }
     if (osfItem.tags.indexOf('chapter') !== -1) {
@@ -83,15 +83,15 @@ var osfExportModules = {
     }
     if (typeof osfItem.timeSec === 'number') {
       if (osfItem.url !== false) {
-        line = '<a data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true, true) + ' href="' + osfItem.url + '">' + osfItem.osftext + '</a>';
+        line = '<a data-tooltip="' + osfItem.timeSec + '" ' + tinyosf.buildTags(osfItem.tags, 2, true) + ' href="' + osfItem.url + '">' + osfItem.osftext + '</a>';
       } else {
-        line = '<span data-tooltip="' + osfItem.timeSec + '" ' + osfBuildTags(osfItem.tags, true, true) + '>' + osfItem.osftext + '</span>';
+        line = '<span data-tooltip="' + osfItem.timeSec + '" ' + tinyosf.buildTags(osfItem.tags, 2, true) + '>' + osfItem.osftext + '</span>';
       }
     } else {
       if (osfItem.url !== false) {
-        line = '<a' + osfBuildTags(osfItem.tags, true, true) + ' href="' + osfItem.url + '">' + osfItem.osftext + '</a>';
+        line = '<a' + tinyosf.buildTags(osfItem.tags, 2, true) + ' href="' + osfItem.url + '">' + osfItem.osftext + '</a>';
       } else {
-        line = '<span' + osfBuildTags(osfItem.tags, true, true) + '>' + osfItem.osftext + '</span>';
+        line = '<span' + tinyosf.buildTags(osfItem.tags, 2, true) + '>' + osfItem.osftext + '</span>';
       }
     }
     if (osfItem.tags.indexOf('chapter') !== -1) {
@@ -144,6 +144,60 @@ var osfExportModules = {
         }
         parsed = line + '  ';
       }
+    }
+    return '\n' + parsed;
+  },
+  audacity: function (osfItem, status) {
+    "use strict";
+    var line, parsed, rank, i, itemTime;
+    if (status !== undefined) {
+      return '';
+    }
+    if (osfItem.url !== false) {
+      line = osfItem.osftext + ' &lt;' + osfItem.url + '&gt;';
+    } else {
+      line = osfItem.osftext;
+    }
+    rank = '';
+    if (osfItem.rank.curr !== 0) {
+      for (i = 1; i < osfItem.rank.curr; i += 1) {
+        rank += '-';
+      }
+    }
+    itemTime = osfItem.timeSec !== false ? osfItem.timeSec : osfItem.timeSecLast;
+    parsed = itemTime + '.000000' + "\t" + osfItem.timeSecNext + '.000000' + "\t" + rank + ' ' + line;
+    parsed += ' ' + tinyosf.buildTags(osfItem.tags, 0, false);
+    return '\n' + parsed;
+  },
+  reaper: function (osfItem, status) {
+    "use strict";
+    var line, parsed, rank, i, itemTime;
+    if (status === 'pre') {
+      osfExportTemp = 0;
+      return '#,Name,Start,End,Length,Color';
+    }
+    osfExportTemp++;
+    if (status !== undefined) {
+      return '';
+    }
+    if (osfItem.url !== false) {
+      line = osfItem.osftext + ' &lt;' + osfItem.url + '&gt;';
+    } else {
+      line = osfItem.osftext;
+    }
+    rank = '';
+    if (osfItem.rank.curr !== 0) {
+      for (i = 1; i < osfItem.rank.curr; i += 1) {
+        rank += '-';
+      }
+      line += rank + ' ';
+    }
+    itemTime = osfItem.timeSec !== false ? osfItem.timeSec : osfItem.timeSecLast;
+    parsed = 'M' + osfExportTemp + ',' + line + ' ' + tinyosf.buildTags(osfItem.tags, 0, false) + ',' + tinyosf.TimeIntToHMS(itemTime) + ":0," + ",";
+    if (osfItem.tags.indexOf('chapter') !== -1) {
+      parsed += ',DD0F22';
+    } else {
+      parsed += ',';
     }
     return '\n' + parsed;
   },

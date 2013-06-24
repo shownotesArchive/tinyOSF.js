@@ -69,6 +69,10 @@ function generateShownotes () {
     mode = 'md';
   } else if(window.location.hash.indexOf('chapter') !== -1) {
     mode = 'chapter';
+  } else if(window.location.hash.indexOf('audacity') !== -1) {
+    mode = 'audacity';
+  } else if(window.location.hash.indexOf('reaper') !== -1) {
+    mode = 'reaper';
   } else if(window.location.hash.indexOf('glossary') !== -1) {
     mode = 'glossary';
   } else if(window.location.hash.indexOf('wikigeeks') !== -1) {
@@ -102,7 +106,7 @@ function generateShownotes () {
   if (mode === 'diff') {
     shownotes = diffOSF();
   } else {
-    shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExportModules[mode]);
+    shownotes = tinyosf.Export(tinyosf.Parser(document.getElementById('OSF').innerHTML),osfExportModules[mode]);
   }
   
   
