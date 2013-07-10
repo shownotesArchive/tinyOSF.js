@@ -175,6 +175,31 @@ var osfExportTemp, osfExportModules = {
     parsed += ' ' + tinyosf.buildTags(osfItem.tags, 0, false);
     return '\n' + parsed;
   },
+  audacitychapter: function (osfItem, status) {
+    "use strict";
+    var line, parsed, rank, i, itemTime;
+    if (status !== undefined) {
+      return '';
+    }
+    if (osfItem.tags.indexOf('chapter') !== -1) {
+      if (osfItem.url !== false) {
+        line = osfItem.osftext + ' &lt;' + osfItem.url + '&gt;';
+      } else {
+        line = osfItem.osftext;
+      }
+      rank = '';
+      if (osfItem.rank.curr !== 0) {
+        for (i = 1; i < osfItem.rank.curr; i += 1) {
+          rank += '-';
+        }
+      }
+      itemTime = osfItem.timeSec !== false ? osfItem.timeSec : osfItem.timeSecLast;
+      parsed = itemTime + '.000000' + "\t" + osfItem.timeSecNext + '.000000' + "\t" + rank + ' ' + line;
+      parsed += ' ' + tinyosf.buildTags(osfItem.tags, 0, false);
+      return '\n' + parsed;
+    }
+    return '';
+  },
   reaper: function (osfItem, status) {
     "use strict";
     var line, parsed, rank, i, itemTime;

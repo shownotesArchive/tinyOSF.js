@@ -17,12 +17,13 @@
   <h1>tinyOSF.js</h1>
   <h2>a few lines of code to convert OSF to HTML <i style="font-weight: 100;">version 0.3.2</i></h2>
   <strong>load Examples: </strong>
-  <div id="files">
+  <div id="files"><br/>
     <span data-file="abs006" onclick="loadOSFexamples(this); return false;">ABS Radio 6</span>
     <span data-file="rl024" onclick="loadOSFexamples(this); return false;">Robotiklabor 24</span>
     <span data-file="mm100" onclick="loadOSFexamples(this); return false;">mobileMacs 100</span>
     <span data-file="mm101" onclick="loadOSFexamples(this); return false;">mobileMacs 101</span>
     <span data-file="mm105" onclick="loadOSFexamples(this); return false;">mobileMacs 105</span>
+    <br/><br/>
     <span data-file="mm108" onclick="loadOSFexamples(this); return false;">mobileMacs 108</span>
     <span data-file="mm110" onclick="loadOSFexamples(this); return false;">mobileMacs 110</span>
     <span data-file="wg039" onclick="loadOSFexamples(this); return false;">Wikigeeks 39</span>
@@ -31,7 +32,7 @@
   <br/><br/>
   
   <strong>Export Mode: </strong>
-  <div id="expmode">
+  <div id="expmode"><br/>
     <span data-mode="osf"       onclick="changeExportMode(this); return false;">OSF</span>
     <span data-mode="diff"      onclick="changeExportMode(this); return false;">Diff</span>
     <span data-mode="md"        onclick="changeExportMode(this); return false;">Markdown</span>
@@ -39,10 +40,20 @@
     <span data-mode="wikigeeks" onclick="changeExportMode(this); return false;">HTML list<i> (preview)</i></span>
     <span data-mode="newhtml"   onclick="changeExportMode(this); return false;">HTML new<i> (preview)</i></span>
     <span data-mode="source"    onclick="changeExportMode(this); return false;">HTML<i> (export)</i></span>
+    <br/><br/>
     <span data-mode="chapter"   onclick="changeExportMode(this); return false;">Chapter</span>
     <span data-mode="audacity"  onclick="changeExportMode(this); return false;">Audacity</span>
+    <span data-mode="audacityc" onclick="changeExportMode(this); return false;">Audacity Chapter</span>
     <span data-mode="reaper"    onclick="changeExportMode(this); return false;">Reaper</span>
     <span data-mode="glossary"  onclick="changeExportMode(this); return false;">Glossary</span>
+    <span data-mode="json"      onclick="changeExportMode(this); return false;">JSON</span>
+  </div>
+  <br/><br/>
+  
+  <strong>Source: </strong>
+  <div id="source"><br/>
+    <span data-mode="preview" onclick="changeExportSetting(this); return false;">Preview</span>
+    <span data-mode="source"  onclick="changeExportSetting(this); return false;">Source</span>
   </div>
 </div>
 <code id="OSF"><!--

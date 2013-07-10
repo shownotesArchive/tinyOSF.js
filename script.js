@@ -1,5 +1,5 @@
-var mode = 'html';
-if(typeof escapeHtmlEntities == 'undefined') {
+var mode = 'html', escapeHtmlEntities;
+if(escapeHtmlEntities === undefined) {
     escapeHtmlEntities = function (text) {
         return text.replace(/[\u00A0-\u2666<>\&]/g, function(c) {
             return '&' + (escapeHtmlEntities.entityTable[c.charCodeAt(0)] || '#'+c.charCodeAt(0)) + ';';
@@ -46,6 +46,15 @@ function changeExportMode (e) {
   return false;
 }
 
+function changeExportSetting (e) {
+  var setting = e.getAttribute('data-mode');
+  if (setting === 'preview') {
+    document.getElementById('parsed').innerHTML = tinyosf.htmldecode(document.getElementById('parsed').innerHTML);
+  } else if (setting === 'source') {
+    document.getElementById('parsed').innerHTML = tinyosf.htmlencode(document.getElementById('parsed').innerHTML);
+  }
+}
+
 var dmp = new diff_match_patch();
 function diffOSF() {
   var text1, text2, ms_start, d, ms_end, ds;
@@ -69,6 +78,8 @@ function generateShownotes () {
     mode = 'md';
   } else if(window.location.hash.indexOf('chapter') !== -1) {
     mode = 'chapter';
+  } else if(window.location.hash.indexOf('audacityc') !== -1) {
+    mode = 'audacitychapter';
   } else if(window.location.hash.indexOf('audacity') !== -1) {
     mode = 'audacity';
   } else if(window.location.hash.indexOf('reaper') !== -1) {
@@ -85,6 +96,8 @@ function generateShownotes () {
     mode = 'diff';
   } else if(window.location.hash.indexOf('osf') !== -1) {
     mode = 'osf';
+  } else if(window.location.hash.indexOf('json') !== -1) {
+    mode = 'json';
   } else {
     mode = 'html';
   }
@@ -103,12 +116,18 @@ function generateShownotes () {
     buttons[i].className = 'baf grey bluehover';
   }
   
+  buttons = document.getElementById('source').getElementsByTagName('span');
+  for(i = 0; i < buttons.length; i++) {
+    buttons[i].className = 'baf grey bluehover';
+  }
+  
   if (mode === 'diff') {
     shownotes = diffOSF();
+  } else if (mode === 'json') {
+    shownotes = JSON.stringify(tinyosf.Parser(document.getElementById('OSF').innerHTML), null, '  ');
   } else {
     shownotes = tinyosf.Export(tinyosf.Parser(document.getElementById('OSF').innerHTML),osfExportModules[mode]);
   }
-  
   
   if((window.location.hash.indexOf('html') === -1)&&(window.location.hash !== '')) {
     document.getElementById('parsed').className = ' markdown';//.whiteSpace = 'pre';
