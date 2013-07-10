@@ -6,7 +6,7 @@
  * http://opensource.org/licenses/MIT
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.3.1
+ * Version: 0.3.2
  */
 
 /*jslint browser: true, white: true, indent: 2 */
@@ -105,14 +105,15 @@ var osfExportTemp, osfExportModules = {
       if (osfItem.iteminfo.afterChapter === 1) {
         parsed += '<ol>';
       } else {
-        if (osfItem.rank.prev < osfItem.rank.curr) {
-          for (i = 0; i < (osfItem.rank.curr - osfItem.rank.prev); i += 1) {
-            line = '<ol>' + line;
-          }
-        } else if (osfItem.rank.prev > osfItem.rank.curr) {
+        if (osfItem.rank.prev > osfItem.rank.curr) {
           for (i = 0; i < (osfItem.rank.prev - osfItem.rank.curr); i += 1) {
             line = '</ol>' + line;
           }
+        }
+      }
+      if (osfItem.rank.prev < osfItem.rank.curr) {
+        for (i = 0; i < (osfItem.rank.curr - osfItem.rank.prev); i += 1) {
+          line = '<ol>' + line;
         }
       }
       parsed += '<li>' + line + '</li>';

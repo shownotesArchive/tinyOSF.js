@@ -6,10 +6,10 @@
  * http://opensource.org/licenses/MIT
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.3.1
+ * Version: 0.3.2
  */
 
-/*jslint browser: true, white: true, indent: 2 */
+/*jslint browser: true, white: true, regexp: true, indent: 2 */
 
 var tinyosf = {
   extractTags: function (tagString, urlString) {
@@ -141,19 +141,19 @@ var tinyosf = {
       timeSec,
       osfFirstTS,
       osfFirstHMS,
-      osfRegex = /(^([(\d{8,})((\d+\u003A)?\d+\u003A\d+(\u002E\d+)?)]*)?\h*([\u0020-\u0022\u0024-\u003B\u003D\u003F-\u007D\u00C0-\u00FF\u2013„“@€!"§$%&\(\)=\?`´\+ ]+) *(\u003C[\S]*\u003E)?((\s*\u0023[\S]* ?)*)\n*)/gmi;
+      osfRegex = /(^([(\d{8,})((\d+\u003A)?\d+\u003A\d+(\u002E\d+)?)]*)?\h*([^#<>\n\v]+) *(\u003C[\S]*\u003E)?((\s*\u0023[\S]* ?)*)\n*)/gmi;
     //about this Regex:
-    //^([(\d{8,})(\u002D+)(\d+\u003A\d+\u003A\d+(\u002E\d*)?)]*)?                                => 1234567890 or - or 00:01:02[.000] or nothing at the beginning of the line
-    //([\u0020-\u0022\u0024-\u003B\u003D\u003F-\u007D\u00C0-\u00FF\u2013„“@€!"§$%&\(\)=\?`´\+]+) => a wide range of chars (excluding #,<,> and a few more) maybe this will change to ([^#<>]+) anytime
-    //(\u003C[\S]*\u003E)?                                                                       => a string beginning with < and ending with > containing no whitespace or nothing
-    //((\s*\u0023[\S]* ?)*)                                                                      => a string beginning with a whitespace, then a # and then some not whitespace chars or nothing
-  
+    //^([(\d{8,})(\u002D+)(\d+\u003A\d+\u003A\d+(\u002E\d*)?)]*)?   => 1234567890 or - or 00:01:02[.000] or nothing at the beginning of the line
+    //([^#<>\n\v]+)                                                 => a wide range of chars (excluding #,<,> and new lines (vertical whitespace))
+    //(\u003C[\S]*\u003E)?                                          => a string beginning with < and ending with > containing no whitespace or nothing
+    //((\s*\u0023[\S]* ?)*)                                         => a string beginning with a whitespace, then a # and then some not whitespace chars or nothing
+
     if (string.indexOf('/HEADER') !== -1) {
       splitAt = '/HEADER';
     } else if (string.indexOf('/HEAD') !== -1) {
       splitAt = '/HEAD';
     }
-  
+
     if (typeof splitAt === 'string') {
       string = string.split(splitAt, 2)[1].trim();
     } else {
@@ -161,14 +161,14 @@ var tinyosf = {
       splitAt = string.indexOf(splitAt[1]);
       string = string.slice(splitAt);
     }
-  
+
     string = '\n'+string.replace(/\s+/, ' ')+'\n';
     osfArray = osfRegex.exec(string);
     while (osfArray !== null) {
       osfArray[3] = osfArray[3].trim();
       if (osfArray[3].replace(/[\s\d\.:\-]+/gmi,'').length > 2) {
         osfArray[0] = osfArray[0].trim();
-  
+
         osfTime = osfArray[2];
         if (/(\d{8,})/.test(osfTime)) {
           osfTime = parseInt(osfTime, 10);
@@ -187,10 +187,10 @@ var tinyosf = {
           timeHMS = false;
           timeSec = false;
         }
-  
+
         osfArray[1] = timeHMS; //HH:MM:SS
         osfArray[2] = timeSec; //Seconds
-  
+
         osfArray[6] = 0;
         if(/^[\-\–\—]+/.test(osfArray[3])) {
           rank = /^[\-\–\—]+/.exec(osfArray[3]);
@@ -229,7 +229,7 @@ var tinyosf = {
       timeHMS = osfline[1];
       timeSec = osfline[2];
       osftext = osfline[3];
-  
+
       if (typeof osfline[4] === 'string') {
         url = osfline[4].replace(/\u003C/, '').replace(/\u003E/, '');
       } else {
@@ -248,15 +248,15 @@ var tinyosf = {
           iteminfo.nextisChapter = false;
         }
       }
-  
+
       ranks.prev = osf[i-1] !== undefined ? osf[i-1][6] : 0;
       ranks.curr = osf[i][6];
       ranks.next = osf[i+1] !== undefined ? osf[i+1][6] : 0;
-  
+
       if ((osf[i][2] !== undefined)&&(osf[i][2] !== false)) {
         lastTime = osf[i][2];
       }
-  
+
       if (osf[i+1] !== undefined) {
         if ((osf[i+1][2] !== undefined)&&(osf[i+1][2] !== false)) {
           nextTime = osf[i+1][2];

@@ -6,7 +6,7 @@
 # http://opensource.org/licenses/MIT
 #
 # Github:  https://github.com/shownotes/tinyOSF.js/
-# Version: 0.3.1
+# Version: 0.3.2
 #
 
 osfExportTemp = undefined
@@ -87,16 +87,16 @@ osfExportModules =
       if osfItem.iteminfo.afterChapter is 1
         parsed += "<ol>"
       else
-        if osfItem.rank.prev < osfItem.rank.curr
-          i = 0
-          while i < (osfItem.rank.curr - osfItem.rank.prev)
-            line = "<ol>" + line
-            i += 1
-        else if osfItem.rank.prev > osfItem.rank.curr
+        if osfItem.rank.prev > osfItem.rank.curr
           i = 0
           while i < (osfItem.rank.prev - osfItem.rank.curr)
             line = "</ol>" + line
             i += 1
+      if osfItem.rank.prev < osfItem.rank.curr
+        i = 0
+        while i < (osfItem.rank.curr - osfItem.rank.prev)
+          line = "<ol>" + line
+          i += 1
       parsed += "<li>" + line + "</li>"
       parsed += "</ol>"  if osfItem.iteminfo.nextisChapter is true
     parsed
