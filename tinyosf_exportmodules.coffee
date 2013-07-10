@@ -6,7 +6,7 @@
 # http://opensource.org/licenses/MIT
 #
 # Github:  https://github.com/shownotes/tinyOSF.js/
-# Version: 0.3.0
+# Version: 0.3.1
 #
 
 osfExportTemp = undefined
@@ -59,6 +59,7 @@ osfExportModules =
     "use strict"
     line = undefined
     parsed = ""
+    derank = undefined
     i = undefined
     if status isnt `undefined`
       return "</ol>"  if status is "post"
@@ -75,20 +76,27 @@ osfExportModules =
       else
         line = "<span" + tinyosf.buildTags(osfItem.tags, 2, true) + ">" + osfItem.osftext + "</span>"
     if osfItem.tags.indexOf("chapter") isnt -1
-      line = "<h2><span>" + osfItem.timeHMS + "</span> " + line + "</h2>"
+      derank = ""
+      i = 0
+      while i < osfItem.rank.prev
+        derank += "</ol>"
+        i += 1
+      line = derank + "<h" + (osfItem.rank.curr + 2) + "><span>" + osfItem.timeHMS + "</span> " + line + "</h" + (osfItem.rank.curr + 2) + ">"
       parsed = line
     else
-      parsed += "<ol>"  if osfItem.iteminfo.afterChapter is 1
-      if osfItem.rank.prev < osfItem.rank.curr
-        i = 0
-        while i < (osfItem.rank.curr - osfItem.rank.prev)
-          line = "<ol>" + line
-          i += 1
-      else if osfItem.rank.prev > osfItem.rank.curr
-        i = 0
-        while i < (osfItem.rank.prev - osfItem.rank.curr)
-          line = "</ol>" + line
-          i += 1
+      if osfItem.iteminfo.afterChapter is 1
+        parsed += "<ol>"
+      else
+        if osfItem.rank.prev < osfItem.rank.curr
+          i = 0
+          while i < (osfItem.rank.curr - osfItem.rank.prev)
+            line = "<ol>" + line
+            i += 1
+        else if osfItem.rank.prev > osfItem.rank.curr
+          i = 0
+          while i < (osfItem.rank.prev - osfItem.rank.curr)
+            line = "</ol>" + line
+            i += 1
       parsed += "<li>" + line + "</li>"
       parsed += "</ol>"  if osfItem.iteminfo.nextisChapter is true
     parsed
@@ -153,7 +161,7 @@ osfExportModules =
     if status is "pre"
       osfExportTemp = 0
       return "#,Name,Start,End,Length,Color"
-    osfExportTemp++
+    osfExportTemp += 1
     return ""  if status isnt `undefined`
     if osfItem.url isnt false
       line = osfItem.osftext + " &lt;" + osfItem.url + "&gt;"

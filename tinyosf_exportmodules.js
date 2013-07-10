@@ -10,7 +10,7 @@
  */
 
 /*jslint browser: true, white: true, indent: 2 */
-/*global tinyosf.buildTags */
+/*global tinyosf */
 
 //these functions are only examples, please consider making your own
 
@@ -104,14 +104,15 @@ var osfExportTemp, osfExportModules = {
     } else {
       if (osfItem.iteminfo.afterChapter === 1) {
         parsed += '<ol>';
-      }
-      if (osfItem.rank.prev < osfItem.rank.curr) {
-        for (i = 0; i < (osfItem.rank.curr - osfItem.rank.prev); i += 1) {
-          line = '<ol>' + line;
-        }
-      } else if (osfItem.rank.prev > osfItem.rank.curr) {
-        for (i = 0; i < (osfItem.rank.prev - osfItem.rank.curr); i += 1) {
-          line = '</ol>' + line;
+      } else {
+        if (osfItem.rank.prev < osfItem.rank.curr) {
+          for (i = 0; i < (osfItem.rank.curr - osfItem.rank.prev); i += 1) {
+            line = '<ol>' + line;
+          }
+        } else if (osfItem.rank.prev > osfItem.rank.curr) {
+          for (i = 0; i < (osfItem.rank.prev - osfItem.rank.curr); i += 1) {
+            line = '</ol>' + line;
+          }
         }
       }
       parsed += '<li>' + line + '</li>';
@@ -180,7 +181,7 @@ var osfExportTemp, osfExportModules = {
       osfExportTemp = 0;
       return '#,Name,Start,End,Length,Color';
     }
-    osfExportTemp++;
+    osfExportTemp += 1;
     if (status !== undefined) {
       return '';
     }

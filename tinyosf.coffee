@@ -6,7 +6,7 @@
 # http://opensource.org/licenses/MIT
 #
 # Github:  https://github.com/shownotes/tinyOSF.js/
-# Version: 0.3.0
+# Version: 0.3.1
 #
 
 tinyosf =
