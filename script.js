@@ -15,7 +15,7 @@ function loadOSFexamples (e) {
   majaX({'url':url},
     function (resp, ajax) {
       document.getElementById('OSF').innerHTML = '<!--'+"\n"+ajax.responseText+"\n"+'-->';
-      shownotes = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExportModules[mode]);
+      shownotes = tinyosf.Export(tinyosf.Parser(document.getElementById('OSF').innerHTML),osfExportModules[mode]);
       document.getElementById('parsed').innerHTML = shownotes;
     }
   );
@@ -59,7 +59,7 @@ var dmp = new diff_match_patch();
 function diffOSF() {
   var text1, text2, ms_start, d, ms_end, ds;
   text1 = document.getElementById('OSF').innerHTML;
-  text2 = osfExport(osfParser(document.getElementById('OSF').innerHTML),osfExportModules['osf']);
+  text2 = tinyosf.Export(tinyosf.Parser(document.getElementById('OSF').innerHTML),osfExportModules['osf']);
   dmp.Diff_Timeout = 5;
   dmp.Diff_EditCost = 8;
   ms_start = (new Date()).getTime();
