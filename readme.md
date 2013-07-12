@@ -17,7 +17,7 @@ This OSF Parser is used in the following projects:
 ```js
 var osfShownotes = '1358966352 Sendungsbeginn #c ...';
 var exportMode = 'html';
-shownotes = osfExport(osfParser(osfShownotes),osfExportModules[exportMode]);
+shownotes = tinyosf.Export(tinyosf.Parser(osfShownotes),osfExportModules[exportMode]);
 document.getElementById('parsed').innerHTML = shownotes;
 ```
 
