@@ -17,6 +17,7 @@ function loadOSFexamples (e) {
       document.getElementById('OSF').innerHTML = '<!--'+"\n"+ajax.responseText+"\n"+'-->';
       shownotes = tinyosf.Export(tinyosf.Parser(document.getElementById('OSF').innerHTML),osfExportModules[mode]);
       document.getElementById('parsed').innerHTML = shownotes;
+      displaySource = false;
     }
   );
   buttons = document.getElementById('files').getElementsByTagName('span');
