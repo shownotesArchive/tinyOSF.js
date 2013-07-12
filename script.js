@@ -1,4 +1,4 @@
-var mode = 'html', escapeHtmlEntities;
+var mode = 'html', displaySource = false, escapeHtmlEntities;
 if(escapeHtmlEntities === undefined) {
     escapeHtmlEntities = function (text) {
         return text.replace(/[\u00A0-\u2666<>\&]/g, function(c) {
@@ -17,6 +17,7 @@ function loadOSFexamples (e) {
       document.getElementById('OSF').innerHTML = '<!--'+"\n"+ajax.responseText+"\n"+'-->';
       shownotes = tinyosf.Export(tinyosf.Parser(document.getElementById('OSF').innerHTML),osfExportModules[mode]);
       document.getElementById('parsed').innerHTML = shownotes;
+      displaySource = false;
     }
   );
   buttons = document.getElementById('files').getElementsByTagName('span');
@@ -34,6 +35,7 @@ function changeExportMode (e) {
   var mode, buttons = [], i = 0, OSFmode = e.getAttribute('data-mode');
   window.location.hash = '#'+OSFmode;
   mode = OSFmode;
+  displaySource = false;
   generateShownotes();
   buttons = document.getElementById('expmode').getElementsByTagName('span');
   for(i = 0; i < buttons.length; i++) {
@@ -48,10 +50,12 @@ function changeExportMode (e) {
 
 function changeExportSetting (e) {
   var setting = e.getAttribute('data-mode');
-  if (setting === 'preview') {
+  if (setting === 'preview' && displaySource) {
     document.getElementById('parsed').innerHTML = tinyosf.htmldecode(document.getElementById('parsed').innerHTML);
-  } else if (setting === 'source') {
+    displaySource = false;
+  } else if (setting === 'source' && !displaySource) {
     document.getElementById('parsed').innerHTML = tinyosf.htmlencode(document.getElementById('parsed').innerHTML);
+    displaySource = true;
   }
 }
 
