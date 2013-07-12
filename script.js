@@ -35,6 +35,7 @@ function changeExportMode (e) {
   var mode, buttons = [], i = 0, OSFmode = e.getAttribute('data-mode');
   window.location.hash = '#'+OSFmode;
   mode = OSFmode;
+  displaySource = false;
   generateShownotes();
   buttons = document.getElementById('expmode').getElementsByTagName('span');
   for(i = 0; i < buttons.length; i++) {
