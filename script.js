@@ -1,4 +1,4 @@
-var mode = 'html', escapeHtmlEntities;
+var mode = 'html', displaySource = false, escapeHtmlEntities;
 if(escapeHtmlEntities === undefined) {
     escapeHtmlEntities = function (text) {
         return text.replace(/[\u00A0-\u2666<>\&]/g, function(c) {
@@ -48,10 +48,12 @@ function changeExportMode (e) {
 
 function changeExportSetting (e) {
   var setting = e.getAttribute('data-mode');
-  if (setting === 'preview') {
+  if (setting === 'preview' && displaySource) {
     document.getElementById('parsed').innerHTML = tinyosf.htmldecode(document.getElementById('parsed').innerHTML);
-  } else if (setting === 'source') {
+    displaySource = false;
+  } else if (setting === 'source' && !displaySource) {
     document.getElementById('parsed').innerHTML = tinyosf.htmlencode(document.getElementById('parsed').innerHTML);
+    displaySource = true;
   }
 }
 
