@@ -15,7 +15,7 @@ Webseite: <http://blog.binaergewitter.de>
 
 
 00:00:00 Intro #c
-00:00:25 Begrüßung zum 58ten Binärgewitter Podcast
+00:00:25 Begrüßung zur 58ten Episode des Binärgewitter Podcast <http://blog.binaergewitter.de/> #podcast
 00:00:34 Begrüßung der NSA <http://de.wikipedia.org/wiki/National_Security_Agency> #g
 00:01:14 Shownotes Crowdsourcen
 00:01:25 Shownot.es Projekt <http://shownot.es/>
@@ -31,10 +31,10 @@ Webseite: <http://blog.binaergewitter.de>
 00:04:32 Es ist schon interessant zu wissen wo sich jemand befindet
 00:04:41 PRISM <http://de.wikipedia.org/wiki/PRISM_(%C3%9Cberwachungsprogramm)> #g
 00:04:31 NSA <http://de.wikipedia.org/wiki/National_Security_Agency> #g
-00:04:55 SOAP <http://de.wikipedia.org/wiki/SOAP> #g
-- "Kranke Technologien aus den Neunzigern" #q
-00:05:05  CORBA <http://en.wikipedia.org/wiki/CORBA> #g
-00:05:20 IPX <http://en.wikipedia.org/wiki/Internetwork_Packet_Exchange> #g
+00:04:54 "Kranke Technologien aus den Neunzigern" #q
+00:04:55 - SOAP <http://de.wikipedia.org/wiki/SOAP> #g
+00:05:05 - CORBA <http://en.wikipedia.org/wiki/CORBA> #g
+00:05:20 - IPX <http://en.wikipedia.org/wiki/Internetwork_Packet_Exchange> #g
 00:05:44 Starcraft
 00:05:49 Command and Conquer <http://en.wikipedia.org/wiki/Command_and_Conquer> #g
 00:06:50 Am 9 (Monat einfügen) ist Schluss mit Google Latitude
@@ -177,6 +177,7 @@ Sleepycat Software <http://de.wikipedia.org/wiki/Sleepycat_Software> #g
 01:22:00 - ShowPad <https://github.com/shownotes/show-pad> #source
 - tinyOSF.js (OSF Parser in JS) <https://github.com/shownotes/tinyOSF.js> #source
 - shownot.es Wordpress Plugin <https://github.com/SimonWaldherr/wp-osf-shownotes> #source
+- (&#8230;) <https://github.com/shownotes> #source
 01:25:03 Die Shownot.es Tools ermöglichen die Ausgabe in verschiedenen Formaten
 - Kapitelmarken (mp4chaps)
 - HTML (verschiedene Styles)

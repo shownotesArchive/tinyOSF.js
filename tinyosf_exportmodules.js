@@ -6,7 +6,7 @@
  * http://opensource.org/licenses/MIT
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.3.2
+ * Version: 0.3.3
  */
 
 /*jslint browser: true, white: true, indent: 2 */
@@ -103,7 +103,7 @@ var osfExportTemp, osfExportModules = {
       parsed = line;
     } else {
       if (osfItem.iteminfo.afterChapter === 1) {
-        parsed += '<ol>';
+        line += '<ol>';
       } else {
         if (osfItem.rank.prev > osfItem.rank.curr) {
           for (i = 0; i < (osfItem.rank.prev - osfItem.rank.curr); i += 1) {
@@ -116,14 +116,14 @@ var osfExportTemp, osfExportModules = {
           line = '<ol>' + line;
         }
       }
-      parsed += '<li>' + line + '</li>';
+      parsed = '<li>' + line + '</li>';
       if (osfItem.iteminfo.nextisChapter === true) {
         parsed += '</ol>';
       }
     }
     return parsed;
   },
-  markdown: function (osfItem, status) {
+  oldmarkdown: function (osfItem, status) {
     "use strict";
     var line, parsed, rank, i;
     if (status !== undefined) {
@@ -149,6 +149,45 @@ var osfExportTemp, osfExportModules = {
           line = '\n' + line;
         }
         parsed = line + '  ';
+      }
+    }
+    return '\n' + parsed;
+  },
+  markdown: function (osfItem, status) {
+    "use strict";
+    var line, parsed, rank, i;
+    if (status !== undefined) {
+      return '';
+    }
+    if (osfItem.url !== false) {
+      osfItem.url = osfItem.url.replace(/[\(\)]/gmi, function (match, capture) {
+        return window.escape(match);
+      });
+      line = '[' + osfItem.osftext + '](' + osfItem.url + ')';
+    } else {
+      line = osfItem.osftext;
+    }
+    if (osfItem.tags.indexOf('chapter') !== -1) {
+      //item is a chapter
+      rank = '#';
+      for (i = 0; i < osfItem.rank.curr; i += 1) {
+        rank += '#';
+      }
+      line = '\n#' + rank + line + ' ```' + osfItem.timeHMS + '```  \n';
+      parsed = line;
+    } else {
+      //item is no chapter
+      rank = '';
+      if ((osfItem.rank.curr !== 0) && (osfItem.iteminfo.afterChapter !== 1)) {
+        for (i = 0; i < osfItem.rank.curr; i += 1) {
+          rank += '    ';
+        }
+        parsed = rank + '*' + ' ' + line;
+      } else {
+        if (osfItem.rank.prev !== 0) {
+          line = '\n' + line;
+        }
+        parsed = '* ' + line + '  ';
       }
     }
     return '\n' + parsed;
@@ -242,6 +281,19 @@ var osfExportTemp, osfExportModules = {
     }
     return '';
   },
+  mp4chaps: function (osfItem, status) {
+    "use strict";
+    if (status !== undefined) {
+      return '';
+    }
+    if (osfItem.tags.indexOf('chapter') !== -1) {
+      if (osfItem.url !== false) {
+        return osfItem.timeHMS + ' ' + osfItem.osftext + ' &lt;' + osfItem.url + '&gt;' + '\n';
+      }
+      return osfItem.timeHMS + ' ' + osfItem.osftext + '\n';
+    }
+    return '';
+  },
   glossary: function (osfItem, status) {
     "use strict";
     if (status !== undefined) {
@@ -287,9 +339,5 @@ var osfExportTemp, osfExportModules = {
   md: function (osfItem, status) {
     "use strict";
     return osfExportModules.markdown(osfItem, status);
-  },
-  mp4chaps: function (osfItem, status) {
-    "use strict";
-    return osfExportModules.chapter(osfItem, status);
   }
 };

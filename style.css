@@ -6,6 +6,12 @@ body {
   background-image: url('./bg.png'); /* by Subtle Patterns (http://subtlepatterns.com/) licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License. */
 }
 
+h1, h2, h3, h4, h5, h6 {
+  text-rendering: optimizelegibility;
+  margin-bottom: 1em;
+  font-weight: bold;
+}
+
 h1 {
   text-align: center;
   font-size: 40px;
@@ -37,7 +43,7 @@ h2 {
 }
 
 #parsedBox * {
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: "PT Serif", Georgia, Times, "Times New Roman", serif;
 }
 
 #parsedBox a:hover {
@@ -51,7 +57,7 @@ h2 {
 }
 
 #parsedBox li {
-  list-style: none;
+  list-style: disc;
 }
 
 #parsed.markdown {
