@@ -5,6 +5,8 @@ var mode = 'html',
   displaySource = false,
   escapeHtmlEntities;
 
+tinyosf.includetags = [];
+
 if (escapeHtmlEntities === undefined) {
   escapeHtmlEntities = function (text) {
     "use strict";
@@ -53,10 +55,16 @@ function changeExportSetting(e) {
   } else if (setting === 'source' && !displaySource) {
     document.getElementById('parsed').innerHTML = tinyosf.htmlencode(document.getElementById('parsed').innerHTML);
     displaySource = true;
+  } else if (setting === 'unfiltered') {
+    tinyosf.includetags = undefined;
+  } else if (setting === 'filtered') {
+    tinyosf.includetags = window.prompt("only include the following tags", "chapter topic section audio video link").split(" ");
   }
+  console.log([setting,tinyosf.includetags]);
 }
 
 var dmp = new Diff_match_patch();
+
 function diffOSF() {
   "use strict";
   var text1,
@@ -81,8 +89,11 @@ function diffOSF() {
 function generateShownotes() {
   "use strict";
   var shownotes, i, buttons;
-  if (window.location.hash.indexOf('md') !== -1) {
-    mode = 'md';
+  if (window.location.hash.indexOf('markdown') !== -1) {
+    mode = 'markdown';
+  //} else if (window.location.hash.indexOf('mdfilter') !== -1) {
+  //  tinyosf.includetags = window.prompt("only include the following tags", "chapter topic section audio video link").split(" ");
+  //  mode = 'markdown';
   } else if (window.location.hash.indexOf('chapter') !== -1) {
     mode = 'chapter';
   } else if (window.location.hash.indexOf('mp4chaps') !== -1) {
@@ -126,6 +137,11 @@ function generateShownotes() {
   }
 
   buttons = document.getElementById('source').getElementsByTagName('span');
+  for (i = 0; i < buttons.length; i += 1) {
+    buttons[i].className = 'baf grey bluehover';
+  }
+
+  buttons = document.getElementById('filter').getElementsByTagName('span');
   for (i = 0; i < buttons.length; i += 1) {
     buttons[i].className = 'baf grey bluehover';
   }

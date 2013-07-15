@@ -12,6 +12,18 @@
 /*jslint browser: true, regexp: true, indent: 2 */
 
 var tinyosf = {
+  containsTag: function (includeTags, itemTags) {
+    "use strict";
+    var i;
+    if ((includeTags !== undefined) && (itemTags !== undefined)) {
+      for (i = 0; i < includeTags.length; i += 1) {
+        if (itemTags.indexOf(includeTags[i]) !== -1) {
+          return true;
+        }
+      }
+    }
+    return false;
+  },
   extractTags: function (tagString, urlString) {
     "use strict";
     var tagArray = [],

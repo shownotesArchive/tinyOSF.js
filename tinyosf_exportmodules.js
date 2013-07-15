@@ -21,6 +21,11 @@ var osfExportTemp, osfExportModules = {
     if (status !== undefined) {
       return '';
     }
+    if (tinyosf.includetags !== undefined) {
+      if (!tinyosf.containsTag(tinyosf.includetags, osfItem.tags)) {
+        return '';
+      }
+    }
     if (typeof osfItem.timeSec === 'number') {
       if (osfItem.url !== false) {
         line = '<a data-tooltip="' + osfItem.timeSec + '" title="' + osfItem.timeHMS + ': ' + osfItem.osftext + ' (' + tinyosf.buildTags(osfItem.tags, 1, false) + ')" ' + tinyosf.buildTags(osfItem.tags, 2, true) + ' href="' + osfItem.url + '">' + osfItem.osftext + '</a>';
@@ -80,6 +85,11 @@ var osfExportTemp, osfExportModules = {
         return '';
       }
       return '';
+    }
+    if (tinyosf.includetags !== undefined) {
+      if (!tinyosf.containsTag(tinyosf.includetags, osfItem.tags)) {
+        return '';
+      }
     }
     if (typeof osfItem.timeSec === 'number') {
       if (osfItem.url !== false) {
@@ -159,6 +169,11 @@ var osfExportTemp, osfExportModules = {
     if (status !== undefined) {
       return '';
     }
+    if (tinyosf.includetags !== undefined) {
+      if (!tinyosf.containsTag(tinyosf.includetags, osfItem.tags)) {
+        return '';
+      }
+    }
     if (osfItem.url !== false) {
       osfItem.url = osfItem.url.replace(/[\(\)]/gmi, function (match, capture) {
         return window.escape(match);
@@ -179,13 +194,15 @@ var osfExportTemp, osfExportModules = {
       //item is no chapter
       rank = '';
       if ((osfItem.rank.curr !== 0) && (osfItem.iteminfo.afterChapter !== 1)) {
+        //hierarchy is set
         for (i = 0; i < osfItem.rank.curr; i += 1) {
           rank += '    ';
         }
         parsed = rank + '*' + ' ' + line;
       } else {
+        //no hierarchy
         if (osfItem.rank.prev !== 0) {
-          line = '\n' + line;
+          line = line;
         }
         parsed = '* ' + line + '  ';
       }

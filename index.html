@@ -3,7 +3,7 @@
   <meta charset="utf-8">
   <title>tinyOSF.js</title>
   <link rel="icon" href="./favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="http://cdn.shownot.es/include-shownotes/shownotes.css" type="text/css" media="screen">
+  <link rel="stylesheet" href="./shownotes.css" type="text/css" media="screen">
   <link rel="stylesheet" href="http://selfcss.org/baf/css/baf.css" type="text/css" media="screen">
   <link rel="stylesheet" href="./style.css" type="text/css" media="screen">
   <script src="http://simonwaldherr.github.io/majaX.js/majax.js"></script>
@@ -36,7 +36,8 @@
   <div id="expmode"><br/>
     <span data-mode="osf"       onclick="changeExportMode(this); return false;">OSF</span>
     <span data-mode="diff"      onclick="changeExportMode(this); return false;">Diff</span>
-    <span data-mode="md"        onclick="changeExportMode(this); return false;">Markdown</span>
+    <span data-mode="markdown"  onclick="changeExportMode(this); return false;">Markdown</span>
+    <!--<span data-mode="mdfilter"  onclick="changeExportMode(this); return false;">Markdown filtered</span>-->
     <span data-mode="html"      onclick="changeExportMode(this); return false;">HTML<i> (preview)</i></span>
     <span data-mode="wikigeeks" onclick="changeExportMode(this); return false;">HTML list<i> (preview)</i></span>
     <span data-mode="newhtml"   onclick="changeExportMode(this); return false;">HTML new<i> (preview)</i></span>
@@ -56,6 +57,13 @@
   <div id="source"><br/>
     <span data-mode="preview" onclick="changeExportSetting(this); return false;">Preview</span>
     <span data-mode="source"  onclick="changeExportSetting(this); return false;">Source</span>
+  </div>
+  <br/><br/>
+  
+  <strong>Filter: </strong>
+  <div id="filter"><br/>
+    <span data-mode="unfiltered" onclick="changeExportSetting(this); return false;">Unfiltered</span>
+    <span data-mode="filtered"  onclick="changeExportSetting(this); return false;">Filtered</span>
   </div>
 </div>
 <textarea id="OSF">
