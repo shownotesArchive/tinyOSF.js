@@ -133,36 +133,6 @@ var osfExportTemp, osfExportModules = {
     }
     return parsed;
   },
-  oldmarkdown: function (osfItem, status) {
-    "use strict";
-    var line, parsed, rank, i;
-    if (status !== undefined) {
-      return '';
-    }
-    if (osfItem.url !== false) {
-      line = '[' + osfItem.osftext + '](' + osfItem.url + ')';
-    } else {
-      line = osfItem.osftext;
-    }
-    if (osfItem.tags.indexOf('chapter') !== -1) {
-      line = '\n#' + line + ' ^' + osfItem.timeHMS + '  \n';
-      parsed = line;
-    } else {
-      rank = '';
-      if (osfItem.rank.curr !== 0) {
-        for (i = 1; i < osfItem.rank.curr; i += 1) {
-          rank += '    ';
-        }
-        parsed = rank + '*' + ' ' + line;
-      } else {
-        if (osfItem.rank.prev !== 0) {
-          line = '\n' + line;
-        }
-        parsed = line + '  ';
-      }
-    }
-    return '\n' + parsed;
-  },
   markdown: function (osfItem, status) {
     "use strict";
     var line, parsed, rank, i;
@@ -170,8 +140,10 @@ var osfExportTemp, osfExportModules = {
       return '';
     }
     if (tinyosf.includetags !== undefined) {
-      if (!tinyosf.containsTag(tinyosf.includetags, osfItem.tags)) {
-        return '';
+      if (tinyosf.includetags.length > 0) {
+        if (!tinyosf.containsTag(tinyosf.includetags, osfItem.tags)) {
+          return '';
+        }
       }
     }
     if (osfItem.url !== false) {
@@ -188,7 +160,7 @@ var osfExportTemp, osfExportModules = {
       for (i = 0; i < osfItem.rank.curr; i += 1) {
         rank += '#';
       }
-      line = '\n#' + rank + line + ' ```' + osfItem.timeHMS + '```  \n';
+      line = '\n#' + rank + line + ' ```' + osfItem.timeHMS + '```  ';
       parsed = line;
     } else {
       //item is no chapter
@@ -201,9 +173,6 @@ var osfExportTemp, osfExportModules = {
         parsed = rank + '*' + ' ' + line;
       } else {
         //no hierarchy
-        if (osfItem.rank.prev !== 0) {
-          line = line;
-        }
         parsed = '* ' + line + '  ';
       }
     }

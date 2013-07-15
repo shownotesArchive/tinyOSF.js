@@ -5,7 +5,7 @@ var mode = 'html',
   displaySource = false,
   escapeHtmlEntities;
 
-tinyosf.includetags = [];
+tinyosf.includetags = undefined;
 
 if (escapeHtmlEntities === undefined) {
   escapeHtmlEntities = function (text) {
@@ -60,7 +60,6 @@ function changeExportSetting(e) {
   } else if (setting === 'filtered') {
     tinyosf.includetags = window.prompt("only include the following tags", "chapter topic section audio video link").split(" ");
   }
-  console.log([setting,tinyosf.includetags]);
 }
 
 var dmp = new Diff_match_patch();
@@ -91,9 +90,6 @@ function generateShownotes() {
   var shownotes, i, buttons;
   if (window.location.hash.indexOf('markdown') !== -1) {
     mode = 'markdown';
-  //} else if (window.location.hash.indexOf('mdfilter') !== -1) {
-  //  tinyosf.includetags = window.prompt("only include the following tags", "chapter topic section audio video link").split(" ");
-  //  mode = 'markdown';
   } else if (window.location.hash.indexOf('chapter') !== -1) {
     mode = 'chapter';
   } else if (window.location.hash.indexOf('mp4chaps') !== -1) {
