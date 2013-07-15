@@ -76,7 +76,12 @@ var osfExportTemp, osfExportModules = {
   },
   htmllist: function (osfItem, status) {
     "use strict";
-    var line, parsed = '', derank, i;
+    var line,
+      parsed = '',
+      derank,
+      preline = '',
+      i;
+
     if (status !== undefined) {
       if (status === 'post') {
         return '</ol>';
@@ -104,6 +109,7 @@ var osfExportTemp, osfExportModules = {
         line = '<span' + tinyosf.buildTags(osfItem.tags, 2, true) + '>' + osfItem.osftext + '</span>';
       }
     }
+
     if (osfItem.tags.indexOf('chapter') !== -1) {
       derank = '';
       for (i = 0; i < osfItem.rank.prev; i += 1) {
@@ -113,20 +119,20 @@ var osfExportTemp, osfExportModules = {
       parsed = line;
     } else {
       if (osfItem.iteminfo.afterChapter === 1) {
-        line += '<ol>';
+        preline += '<ol>';
       } else {
         if (osfItem.rank.prev > osfItem.rank.curr) {
           for (i = 0; i < (osfItem.rank.prev - osfItem.rank.curr); i += 1) {
-            line = '</ol>' + line;
+            preline += '</ol>';
           }
         }
       }
       if (osfItem.rank.prev < osfItem.rank.curr) {
         for (i = 0; i < (osfItem.rank.curr - osfItem.rank.prev); i += 1) {
-          line = '<ol>' + line;
+          preline += '<ol>';
         }
       }
-      parsed = '<li>' + line + '</li>';
+      parsed = preline + '<li>' + line + '</li>';
       if (osfItem.iteminfo.nextisChapter === true) {
         parsed += '</ol>';
       }
