@@ -9,14 +9,17 @@
  * Version: 0.3.3
  */
 
-/*jslint browser: true, white: true, regexp: true, indent: 2 */
+/*jslint browser: true, regexp: true, indent: 2 */
 
 var tinyosf = {
   extractTags: function (tagString, urlString) {
     "use strict";
     var tagArray = [],
       tagTempArray = [],
-      i, urlTemp, tagTemp;
+      i,
+      urlTemp,
+      tagTemp;
+
     tagTempArray = tagString.split(' ');
     for (i = 0; i < tagTempArray.length; i += 1) {
       tagTemp = tagTempArray[i].replace('#', '').trim();
@@ -29,6 +32,8 @@ var tinyosf = {
           tagTemp = 'glossary';
         } else if (tagTemp === 'l') {
           tagTemp = 'link';
+        } else if (tagTemp === 'p') {
+          tagTemp = 'prediction';
         } else if (tagTemp === 's') {
           tagTemp = 'section';
         } else if (tagTemp === 'v') {
@@ -71,7 +76,7 @@ var tinyosf = {
             if (output !== '') {
               output += ' ';
             }
-            output += '#'+tagArray[i];
+            output += '#' + tagArray[i];
           }
         }
       }
@@ -81,10 +86,14 @@ var tinyosf = {
     }
     return output;
   },
-  timestampsToHMS: function(now, starttimestamp) {
+  timestampsToHMS: function (now, starttimestamp) {
     "use strict";
     var time = parseInt(now, 10) - parseInt(starttimestamp, 10),
-      hours, minutes, seconds, returntime = '';
+      hours,
+      minutes,
+      seconds,
+      returntime = '';
+
     hours = Math.floor(time / 3600);
     minutes = Math.floor((time - (hours * 3600)) / 60);
     seconds = time - (hours * 3600) - (minutes * 60);
@@ -93,10 +102,12 @@ var tinyosf = {
     returntime += (seconds < 10) ? '0' + seconds : seconds;
     return returntime;
   },
-  HMSToTimeInt: function(hms) {
+  HMSToTimeInt: function (hms) {
     "use strict";
     var time = 0,
-      timeArray, regex = /((\d+\u003A)?(\d+\u003A)?(\d+)(\u002E\d+)?)/;
+      timeArray,
+      regex = /((\d+\u003A)?(\d+\u003A)?(\d+)(\u002E\d+)?)/;
+
     if (hms === undefined) {
       return;
     }
@@ -110,7 +121,7 @@ var tinyosf = {
     }
     return time;
   },
-  TimeIntToHMS: function(now) {
+  TimeIntToHMS: function (now) {
     "use strict";
     return tinyosf.timestampsToHMS(now, 0);
   },
@@ -130,7 +141,7 @@ var tinyosf = {
     div = undefined;
     return string;
   },
-  Parser: function(string) {
+  Parser: function (string) {
     "use strict";
     var osfArray, i = 0,
       splitAt = false,
@@ -162,11 +173,11 @@ var tinyosf = {
       string = string.slice(splitAt);
     }
 
-    string = '\n'+string.replace(/\s+/, ' ')+'\n';
+    string = '\n' + string.replace(/\s+/, ' ') + '\n';
     osfArray = osfRegex.exec(string);
     while (osfArray !== null) {
       osfArray[3] = osfArray[3].trim();
-      if (osfArray[3].replace(/[\s\d\.:\-]+/gmi,'').length > 2) {
+      if (osfArray[3].replace(/[\s\d\.:\-]+/gmi, '').length > 2) {
         osfArray[0] = osfArray[0].trim();
 
         osfTime = osfArray[2];
@@ -192,16 +203,16 @@ var tinyosf = {
         osfArray[2] = timeSec; //Seconds
 
         osfArray[6] = 0;
-        if(/^[\-\–\—]+/.test(osfArray[3])) {
+        if (/^[\-\–\—]+/.test(osfArray[3])) {
           rank = /^[\-\–\—]+/.exec(osfArray[3]);
-          if(rank !== undefined) {
-            if(rank[0] !== undefined) {
+          if (rank !== undefined) {
+            if (rank[0] !== undefined) {
               osfArray[6] = rank[0].length;
               osfArray[3] = osfArray[3].substr(osfArray[6]).trim();
             }
           }
         }
-        osfArray[3] = (' '+tinyosf.htmlencode(osfArray[3])+' ').toString().replace(' "', ' &#8222;').replace('" ', '&#8220 ').trim();
+        osfArray[3] = (' ' + tinyosf.htmlencode(osfArray[3]) + ' ').toString().replace(' "', ' &#8222;').replace('" ', '&#8220 ').trim();
         output[i] = osfArray;
         i += 1;
       }
@@ -218,9 +229,21 @@ var tinyosf = {
     */
     return output;
   },
-  Export: function(osf, modefunction) {
+  Export: function (osf, modefunction) {
     "use strict";
-    var i, osfline, osftext, tags, url, nextTime, lastTime, timeSec, timeHMS, iteminfo = {}, parsed = '', ranks = {};
+    var i,
+      osfline,
+      osftext,
+      tags,
+      url,
+      nextTime,
+      lastTime,
+      timeSec,
+      timeHMS,
+      iteminfo = {},
+      parsed = '',
+      ranks = {};
+
     parsed += modefunction('', 'pre');
     iteminfo.afterChapter = 0;
     iteminfo.nextisChapter = false;
@@ -249,17 +272,17 @@ var tinyosf = {
         }
       }
 
-      ranks.prev = osf[i-1] !== undefined ? osf[i-1][6] : 0;
+      ranks.prev = osf[i - 1] !== undefined ? osf[i - 1][6] : 0;
       ranks.curr = osf[i][6];
-      ranks.next = osf[i+1] !== undefined ? osf[i+1][6] : 0;
+      ranks.next = osf[i + 1] !== undefined ? osf[i + 1][6] : 0;
 
-      if ((osf[i][2] !== undefined)&&(osf[i][2] !== false)) {
+      if ((osf[i][2] !== undefined) && (osf[i][2] !== false)) {
         lastTime = osf[i][2];
       }
 
-      if (osf[i+1] !== undefined) {
-        if ((osf[i+1][2] !== undefined)&&(osf[i+1][2] !== false)) {
-          nextTime = osf[i+1][2];
+      if (osf[i + 1] !== undefined) {
+        if ((osf[i + 1][2] !== undefined) && (osf[i + 1][2] !== false)) {
+          nextTime = osf[i + 1][2];
         } else {
           nextTime = lastTime;
         }

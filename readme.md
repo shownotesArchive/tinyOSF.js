@@ -4,8 +4,8 @@
 
 ###About
 
-tinyOSF.js is a JavaScript implementation of the OpenShownotesFormat.  
-You can get more informations about OSF at [OSF in a Nutshell](http://shownotes.github.io/OSF-in-a-Nutshell/).  
+**tinyOSF.js** is a **JavaScript** parser for the **OpenShownotesFormat**.  
+You can get more informations about OSF at **[OSF in a Nutshell](http://shownotes.github.io/OSF-in-a-Nutshell/#deutsch/)**.  
 This OSF Parser is used in the following projects: 
 
 * [ShowPad](https://github.com/shownotes/show-pad) - [@shownot.es](http://pad.shownot.es/)
