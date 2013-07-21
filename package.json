@@ -1,39 +1,32 @@
 {
-  "name": "tinyosf",
-  "version": "0.3.3",
   "author": {
-    "name": "Simon Waldherr",
     "email": "contact@simonwaldherr.de",
+    "name": "Simon Waldherr",
     "url": "http://simon.waldherr.eu/"
   },
-  "description": "a few lines of code to convert OSF to HTML",
-  "homepage": "https://github.com/shownotes/tinyOSF.js",
-  "maintainers": [
+  "bugs": {
+    "email": "contact@simonwaldherr.de",
+    "url": "https://github.com/shownotes/tinyOSF.js/issues"
+  },
+  "contributors": [
     {
-      "name": "Simon Waldherr",
       "email": "contact@simonwaldherr.de",
-      "web": "http://simon.waldherr.eu/"
-    }
-  ],
-  "contributors": [ 
-    {
       "name": "Simon Waldherr",
-      "email": "contact@simonwaldherr.de",
       "url": "http://simon.waldherr.eu/"
-    } 
+    }
   ],
   "demos": [
     "./index.html"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/shownotes/tinyOSF.js.git"
+  "description": "a few lines of code to convert OSF to HTML",
+  "devDependencies": {
+    "grunt": ">= 0.4.1",
+    "grunt-compare-size": ">= 0.0.0",
+    "grunt-contrib-concat": ">= 0.3.0",
+    "grunt-contrib-uglify": ">= 0.2.2",
+    "gzip-js": ">= 0.3.1"
   },
-  "bugs": {
-    "url": "https://github.com/shownotes/tinyOSF.js/issues",
-    "email": "contact@simonwaldherr.de"
-  },
-  "main": "tinyosf.js",
+  "homepage": "https://github.com/shownotes/tinyOSF.js",
   "keywords": [
     "osf",
     "markup",
@@ -42,5 +35,19 @@
     "shownotes",
     "podcast"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "main": "tinyosf.js",
+  "maintainers": [
+    {
+      "email": "contact@simonwaldherr.de",
+      "name": "Simon Waldherr",
+      "web": "http://simon.waldherr.eu/"
+    }
+  ],
+  "name": "tinyosf",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shownotes/tinyOSF.js.git"
+  },
+  "version": "0.3.4"
 }

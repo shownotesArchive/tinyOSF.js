@@ -21,6 +21,10 @@ h2 {
   font-size: 23px;
 }
 
+h3 {
+  font-size: 17px;
+}
+
 #parsedBox, #header {
   width: 80%;
   min-width: 400px;
@@ -43,7 +47,7 @@ h2 {
 }
 
 #parsedBox * {
-  font-family: "PT Serif", Georgia, Times, "Times New Roman", serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; 
 }
 
 #parsedBox a:hover {

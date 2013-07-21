@@ -6,7 +6,7 @@
  * http://opensource.org/licenses/MIT
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.3.3
+ * Version: 0.3.4
  */
 
 /*jslint browser: true, regexp: true, indent: 2 */
@@ -62,11 +62,18 @@ var tinyosf = {
         tagArray[i] = tagTemp;
       }
     }
+
     if (urlString !== false) {
-      urlTemp = urlString.split('/')[2];
-      if (Array.isArray(urlTemp)) {
-        urlTemp = urlTemp.split('.');
-        tagArray[i + 1] = urlTemp[urlTemp.length - 2] + urlTemp[urlTemp.length - 1];
+      if (urlString.indexOf('/') !== -1) {
+        urlTemp = urlString.split('/');
+        if (urlTemp[1].length === 0) {
+          urlTemp = urlTemp[2].split('.');
+        } else {
+          urlTemp = urlTemp[0].split('.');
+        }
+        if (Array.isArray(urlTemp)) {
+          tagArray[i + 1] = urlTemp[urlTemp.length - 2] + urlTemp[urlTemp.length - 1];
+        }
       }
     }
     return tagArray;
