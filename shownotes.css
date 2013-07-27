@@ -5,20 +5,25 @@
   font-size: 13px;
   margin-top: 2px;
 }
+
 .osf_chapterbox {
   margin-top: 7px;
   margin-bottom: 23px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; 
 }
+
 .osf_chaptertime,
 .osf_chapter {
   display: inline-block;
   vertical-align: text-top;
 }
+
 .osf_chaptertime {
   vertical-align: middle;
 }
+
 div a:hover { text-decoration: underline }
+
 .osf_amazon,
 .osf_applecom,
 .osf_appnet,
@@ -42,10 +47,17 @@ div a:hover { text-decoration: underline }
 .osf_video,
 .osf_esaint,
 .osf_dlrde,
+.osf_wiktionaryorg,
+.osf_deviantartcom,
+.osf_podloveorg,
+.osf_dropboxcom,
+.osf_nytimescom,
+.osf_shownotes,
 .osf_githubcom,
 .osf_imdbcom,
 .osf_flickrcom,
 .osf_tumblrcom,
+.osf_threemach,
 .osf_soundcloudcom,
 .osf_yahoocom,
 .osf_xingcom,
@@ -59,6 +71,12 @@ div a:hover { text-decoration: underline }
   background-size: 16px 16px;
 }
 
+.osf_threemach { background-image: url('./img/bwi/threema.png') }
+.osf_deviantartcom { background-image: url('./img/bwi/deviantart.png') }
+.osf_podloveorg { background-image: url('./img/bwi/podlove.png') }
+.osf_dropboxcom { background-image: url('./img/bwi/dropbox.png') }
+.osf_nytimescom { background-image: url('./img/bwi/nyt.png') }
+.osf_shownotes { background-image: url('./img/bwi/shownotes.png') }
 .osf_heisede { background-image: url('./img/bwi/heise.png') }
 .osf_link { background-image: url('./img/bwi/link.png') }
 .osf_shopping { background-image: url('./img/bwi/shopping.png') }
@@ -73,7 +91,8 @@ div a:hover { text-decoration: underline }
 .osf_twitter { background-image: url('./img/bwi/twitter.png') }
 .osf_wiki,
 .osf_wikipediaorg,
-.osf_glossary { background-image: url('./img/bwi/wikipedia.png') }
+.osf_wiktionaryorg,
+.osf_glossary { background-image: url('./img/bwi/wikipedia2.png') }
 .osf_youtube,
 .osf_youtubecom,
 .osf_youtu.be,
