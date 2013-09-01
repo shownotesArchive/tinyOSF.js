@@ -3,10 +3,10 @@
  *
  * Copyright 2013, Simon Waldherr - http://simon.waldherr.eu/
  * Released under the MIT Licence
- * http://opensource.org/licenses/MIT
+ * http://simon.waldherr.eu/license/mit/
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.3.4
+ * Version: 0.3.5
  */
 
 /*jslint browser: true, regexp: true, indent: 2 */
@@ -336,7 +336,7 @@ var tinyosf = {
  * http://opensource.org/licenses/MIT
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.3.4
+ * Version: 0.3.5
  */
 
 /*jslint browser: true, white: true, indent: 2 */
