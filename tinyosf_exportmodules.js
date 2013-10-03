@@ -14,6 +14,9 @@
 
 //these functions are only examples, please consider making your own
 
+// ugly workaround for reaper chapter marks
+var timeOffset = 0;
+
 var osfExportTemp, osfExportModules = {
   html: function (osfItem, status) {
     "use strict";
@@ -254,7 +257,14 @@ var osfExportTemp, osfExportModules = {
       }
       line += rank + ' ';
     }
-    itemTime = osfItem.timeSec !== false ? osfItem.timeSec : osfItem.timeSecLast;
+    if (osfItem.timeSec !== false) {
+      itemTime = osfItem.timeSec;
+      timeOffset = 0;
+    } else {
+      // Reaper hides markers with the same timestamp -> add a second for lines without a time
+      timeOffset++;
+      itemTime = osfItem.timeSecLast + timeOffset;
+    }
     parsed = 'M' + osfExportTemp + ',' + line + ' ' + tinyosf.buildTags(osfItem.tags, 0, false) + ',' + tinyosf.TimeIntToHMS(itemTime) + ":0," + ",";
     if (osfItem.tags.indexOf('chapter') !== -1) {
       parsed += ',DD0F22';
