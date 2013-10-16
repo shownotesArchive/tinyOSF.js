@@ -231,7 +231,7 @@ var tinyosf = {
             }
           }
         }
-        osfArray[3] = (' ' + tinyosf.htmlencode(osfArray[3]) + ' ').toString().replace(' "', ' &#8222;').replace('" ', '&#8220 ').trim();
+        osfArray[3] = (' ' + tinyosf.htmlencode(osfArray[3]) + ' ').toString().replace(' "', ' &#8222;').replace('" ', '&#8220; ').trim();
         output[i] = osfArray;
         i += 1;
       }

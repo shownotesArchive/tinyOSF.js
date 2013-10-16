@@ -231,7 +231,7 @@ var tinyosf = {
             }
           }
         }
-        osfArray[3] = (' ' + tinyosf.htmlencode(osfArray[3]) + ' ').toString().replace(' "', ' &#8222;').replace('" ', '&#8220 ').trim();
+        osfArray[3] = (' ' + tinyosf.htmlencode(osfArray[3]) + ' ').toString().replace(' "', ' &#8222;').replace('" ', '&#8220; ').trim();
         output[i] = osfArray;
         i += 1;
       }
@@ -333,13 +333,13 @@ var tinyosf = {
  *
  * Copyright 2013, Simon Waldherr - http://simon.waldherr.eu/
  * Released under the MIT Licence
- * http://opensource.org/licenses/MIT
+ * http://simon.waldherr.eu/license/mit/
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
  * Version: 0.3.5
  */
 
-/*jslint browser: true, white: true, indent: 2 */
+/*jslint browser: true, white: true, indent: 2, plusplus: true */
 /*global tinyosf */
 
 //these functions are only examples, please consider making your own
@@ -483,7 +483,7 @@ var osfExportTemp, osfExportModules = {
       }
     }
     if (osfItem.url !== false) {
-      osfItem.url = osfItem.url.replace(/[\(\)]/gmi, function (match, capture) {
+      osfItem.url = osfItem.url.replace(/[\(\)]/gmi, function (match) {
         return window.escape(match);
       });
       line = '[' + osfItem.osftext + '](' + osfItem.url + ')';
@@ -563,7 +563,7 @@ var osfExportTemp, osfExportModules = {
   },
   reaper: function (osfItem, status) {
     "use strict";
-    var line, parsed, rank, i, itemTime;
+    var line, parsed, rank, i, itemTime, timeOffset = 0;
     if (status === 'pre') {
       osfExportTemp = 0;
       return '#,Name,Start,End,Length,Color';
@@ -584,7 +584,15 @@ var osfExportTemp, osfExportModules = {
       }
       line += rank + ' ';
     }
-    itemTime = osfItem.timeSec !== false ? osfItem.timeSec : osfItem.timeSecLast;
+    if (osfItem.timeSec !== false) {
+      itemTime = osfItem.timeSec;
+      timeOffset = 0;
+    } else {
+      // Reaper hides markers with the same timestamp -> add a second for lines without a time
+      // thanks to Andreas Hubel (https://github.com/saerdnaer/tinyOSF.js/commit/43e84dcbb5b54851c89547229d1df202a1eecaf6)
+      timeOffset++;
+      itemTime = osfItem.timeSecLast + timeOffset;
+    }
     parsed = 'M' + osfExportTemp + ',' + line + ' ' + tinyosf.buildTags(osfItem.tags, 0, false) + ',' + tinyosf.TimeIntToHMS(itemTime) + ":0," + ",";
     if (osfItem.tags.indexOf('chapter') !== -1) {
       parsed += ',DD0F22';

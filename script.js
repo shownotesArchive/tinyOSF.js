@@ -155,7 +155,7 @@ function generateShownotes() {
   } else {
     document.getElementById('parsed').className = ' ';
   }
-  if ((window.location.hash.indexOf('source') === -1) && (window.location.hash.indexOf('osf') === -1)) {
+  if ((window.location.hash.indexOf('source') === -1) && (window.location.hash.indexOf('osf') === -1) && (window.location.hash.indexOf('markdown') === -1)) {
     document.getElementById('OSF').style.display = 'none';
     document.getElementById('parsed').innerHTML = shownotes;
   } else {
