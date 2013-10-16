@@ -11,6 +11,18 @@
 
 /*jslint browser: true, regexp: true, indent: 2 */
 
+if (!String.prototype.trim) {
+  String.prototype.trim = function () {
+    return this.replace(/^\s+|\s+$/g, '');
+  };
+}
+
+if (!String.prototype.trimSC) {
+  String.prototype.trimSC = function () {
+    return this.replace(/^[\s\.;:,_]+|[\s\.\-;:,_]+$/g, '');
+  };
+}
+
 var tinyosf = {
   containsTag: function (includeTags, itemTags) {
     "use strict";
@@ -195,7 +207,7 @@ var tinyosf = {
     string = '\n' + string.replace(/\s+/, ' ') + '\n';
     osfArray = osfRegex.exec(string);
     while (osfArray !== null) {
-      osfArray[3] = osfArray[3].trim();
+      osfArray[3] = osfArray[3].trimSC();
       if (osfArray[3].replace(/[\s\d\.:\-]+/gmi, '').length > 2) {
         osfArray[0] = osfArray[0].trim();
 
