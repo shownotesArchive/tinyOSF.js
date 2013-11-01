@@ -277,7 +277,7 @@ var osfExportTemp, osfExportModules = {
       return '';
     }
     if (osfItem.tags.indexOf('chapter') !== -1) {
-      return osfItem.timeHMS + ' ' + osfItem.osftext + '\n';
+      return osfItem.timeHMS + '.000 ' + osfItem.osftext + '\n';
     }
     return '';
   },
