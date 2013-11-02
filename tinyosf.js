@@ -49,29 +49,28 @@ var tinyosf = {
       tagTemp = tagTempArray[i].replace('#', '').trim();
       if (tagTemp.length === 1) {
         if (tagTemp === 'c') {
-          tagTemp = 'chapter';
+          tagArray.push('chapter')
         } else if (tagTemp === 't') {
-          tagTemp = 'topic';
+          tagArray.push('topic')
         } else if (tagTemp === 'g') {
-          tagTemp = 'glossary';
+          tagArray.push('glossary')
         } else if (tagTemp === 'l') {
-          tagTemp = 'link';
+          tagArray.push('link')
         } else if (tagTemp === 'p') {
-          tagTemp = 'prediction';
+          tagArray.push('prediction')
         } else if (tagTemp === 's') {
-          tagTemp = 'section';
+          tagArray.push('section')
         } else if (tagTemp === 'v') {
-          tagTemp = 'video';
+          tagArray.push('video')
         } else if (tagTemp === 'a') {
-          tagTemp = 'audio';
+          tagArray.push('audio')
         } else if (tagTemp === 'i') {
-          tagTemp = 'image';
+          tagArray.push('image')
         } else if (tagTemp === 'q') {
-          tagTemp = 'quote';
+          tagArray.push('quote')
         }
-      }
-      if (tagTemp.length > 3) {
-        tagArray[i] = tagTemp;
+      } else if (tagTemp.length > 2) {
+        tagArray.push(tagTemp)
       }
     }
 
@@ -84,7 +83,7 @@ var tinyosf = {
           urlTemp = urlTemp[0].split('.');
         }
         if (Array.isArray(urlTemp)) {
-          tagArray[i + 1] = urlTemp[urlTemp.length - 2] + urlTemp[urlTemp.length - 1];
+          tagArray.push(urlTemp[urlTemp.length - 2] + urlTemp[urlTemp.length - 1]);
         }
       }
     }
@@ -119,7 +118,7 @@ var tinyosf = {
   },
   timestampsToHMS: function (now, starttimestamp) {
     "use strict";
-    var time = parseInt(now, 10) - parseInt(starttimestamp, 10),
+    var time = parseFloat(now) - parseFloat(starttimestamp),
       hours,
       minutes,
       seconds,
@@ -130,10 +129,10 @@ var tinyosf = {
     seconds = time - (hours * 3600) - (minutes * 60);
     returntime += (hours < 10) ? '0' + hours + ':' : hours + ':';
     returntime += (minutes < 10) ? '0' + minutes + ':' : minutes + ':';
-    returntime += (seconds < 10) ? '0' + seconds : seconds;
+    returntime += (seconds < 10) ? '0' + seconds.toFixed(3) : seconds.toFixed(3);
     return returntime;
   },
-  HMSToTimeInt: function (hms) {
+  HMSToTimeFloat: function (hms) {
     "use strict";
     var time = 0,
       timeArray,
@@ -144,9 +143,16 @@ var tinyosf = {
     }
     timeArray = regex.exec(hms.trim());
     if (timeArray !== null) {
+      if (timeArray[5] === undefined) {
+        timeArray[5] = '000';
+      } else {
+        timeArray[5] = timeArray[5]+'000';
+        timeArray[5] = timeArray[5].substr(1, 3);
+      }
       time += parseInt(timeArray[2], 10) * 3600;
       time += parseInt(timeArray[3], 10) * 60;
       time += parseInt(timeArray[4], 10);
+      time += parseFloat('0.'+timeArray[5]);
     } else {
       return undefined;
     }
@@ -220,11 +226,11 @@ var tinyosf = {
           timeHMS = tinyosf.timestampsToHMS(osfTime, osfFirstTS);
           timeSec = osfTime - osfFirstTS;
         } else if (/((\d+\u003A)?\d+\u003A\d+(\u002E\d+)?)/.test(osfTime)) {
+          timeSec = tinyosf.HMSToTimeFloat(osfTime);
+          timeHMS = tinyosf.TimeIntToHMS(timeSec);
           if (osfFirstHMS === undefined) {
             osfFirstHMS = osfTime;
           }
-          timeHMS = osfTime;
-          timeSec = tinyosf.HMSToTimeInt(osfTime);
         } else {
           timeHMS = false;
           timeSec = false;

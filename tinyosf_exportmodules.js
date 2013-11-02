@@ -306,21 +306,27 @@ var osfExportTemp, osfExportModules = {
   },
   osf: function (osfItem, status) {
     "use strict";
-    var line = '';
+    var line = '', rank = 0;
     if (status !== undefined) {
       return '';
     }
     if (typeof osfItem.timeSec === 'number') {
       line += osfItem.timeHMS + ' ';
     }
+    for (rank = 0; rank < osfItem.osfline[6]; rank += 1) {
+      line += '-';
+    }
+    if (rank !== 0) {
+      line += ' ';
+    }
     line += osfItem.osftext;
     if (osfItem.url !== false) {
       line += ' <' + osfItem.url + '>';
     }
     if (osfItem.tags.length === 1) {
-      line += ' #' + osfItem.tags;
+      line += ' #' + osfItem.tags[0];
     } else if (osfItem.tags.length > 1) {
-      line += osfItem.tags.join(' #');
+      line += ' #'+osfItem.tags.join(' #');
     }
     return line + '\n';
   },
