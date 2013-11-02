@@ -13,12 +13,14 @@
 
 if (!String.prototype.trim) {
   String.prototype.trim = function () {
+    "use strict";
     return this.replace(/^\s+|\s+$/g, '');
   };
 }
 
 if (!String.prototype.trimSC) {
   String.prototype.trimSC = function () {
+    "use strict";
     return this.replace(/^[\s\.;:,_]+|[\s\.\-;:,_]+$/g, '');
   };
 }
@@ -49,28 +51,28 @@ var tinyosf = {
       tagTemp = tagTempArray[i].replace('#', '').trim();
       if (tagTemp.length === 1) {
         if (tagTemp === 'c') {
-          tagArray.push('chapter')
+          tagArray.push('chapter');
         } else if (tagTemp === 't') {
-          tagArray.push('topic')
+          tagArray.push('topic');
         } else if (tagTemp === 'g') {
-          tagArray.push('glossary')
+          tagArray.push('glossary');
         } else if (tagTemp === 'l') {
-          tagArray.push('link')
+          tagArray.push('link');
         } else if (tagTemp === 'p') {
-          tagArray.push('prediction')
+          tagArray.push('prediction');
         } else if (tagTemp === 's') {
-          tagArray.push('section')
+          tagArray.push('section');
         } else if (tagTemp === 'v') {
-          tagArray.push('video')
+          tagArray.push('video');
         } else if (tagTemp === 'a') {
-          tagArray.push('audio')
+          tagArray.push('audio');
         } else if (tagTemp === 'i') {
-          tagArray.push('image')
+          tagArray.push('image');
         } else if (tagTemp === 'q') {
-          tagArray.push('quote')
+          tagArray.push('quote');
         }
       } else if (tagTemp.length > 2) {
-        tagArray.push(tagTemp)
+        tagArray.push(tagTemp);
       }
     }
 
@@ -146,13 +148,13 @@ var tinyosf = {
       if (timeArray[5] === undefined) {
         timeArray[5] = '000';
       } else {
-        timeArray[5] = timeArray[5]+'000';
+        timeArray[5] = timeArray[5] + '000';
         timeArray[5] = timeArray[5].substr(1, 3);
       }
       time += parseInt(timeArray[2], 10) * 3600;
       time += parseInt(timeArray[3], 10) * 60;
       time += parseInt(timeArray[4], 10);
-      time += parseFloat('0.'+timeArray[5]);
+      time += parseFloat('0.' + timeArray[5]);
     } else {
       return undefined;
     }
