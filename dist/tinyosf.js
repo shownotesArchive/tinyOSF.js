@@ -6,7 +6,7 @@
  * http://simon.waldherr.eu/license/mit/
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.3.6
+ * Version: 0.3.7
  */
 
 /*jslint browser: true, regexp: true, indent: 2 */
@@ -356,7 +356,7 @@ var tinyosf = {
  * http://simon.waldherr.eu/license/mit/
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.3.6
+ * Version: 0.3.7
  */
 
 /*jslint browser: true, white: true, indent: 2, plusplus: true */
