@@ -6,19 +6,21 @@
  * http://simon.waldherr.eu/license/mit/
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.3.5
+ * Version: 0.3.6
  */
 
 /*jslint browser: true, regexp: true, indent: 2 */
 
 if (!String.prototype.trim) {
   String.prototype.trim = function () {
+    "use strict";
     return this.replace(/^\s+|\s+$/g, '');
   };
 }
 
 if (!String.prototype.trimSC) {
   String.prototype.trimSC = function () {
+    "use strict";
     return this.replace(/^[\s\.;:,_]+|[\s\.\-;:,_]+$/g, '');
   };
 }
@@ -49,29 +51,28 @@ var tinyosf = {
       tagTemp = tagTempArray[i].replace('#', '').trim();
       if (tagTemp.length === 1) {
         if (tagTemp === 'c') {
-          tagTemp = 'chapter';
+          tagArray.push('chapter');
         } else if (tagTemp === 't') {
-          tagTemp = 'topic';
+          tagArray.push('topic');
         } else if (tagTemp === 'g') {
-          tagTemp = 'glossary';
+          tagArray.push('glossary');
         } else if (tagTemp === 'l') {
-          tagTemp = 'link';
+          tagArray.push('link');
         } else if (tagTemp === 'p') {
-          tagTemp = 'prediction';
+          tagArray.push('prediction');
         } else if (tagTemp === 's') {
-          tagTemp = 'section';
+          tagArray.push('section');
         } else if (tagTemp === 'v') {
-          tagTemp = 'video';
+          tagArray.push('video');
         } else if (tagTemp === 'a') {
-          tagTemp = 'audio';
+          tagArray.push('audio');
         } else if (tagTemp === 'i') {
-          tagTemp = 'image';
+          tagArray.push('image');
         } else if (tagTemp === 'q') {
-          tagTemp = 'quote';
+          tagArray.push('quote');
         }
-      }
-      if (tagTemp.length > 3) {
-        tagArray[i] = tagTemp;
+      } else if (tagTemp.length > 2) {
+        tagArray.push(tagTemp);
       }
     }
 
@@ -84,7 +85,7 @@ var tinyosf = {
           urlTemp = urlTemp[0].split('.');
         }
         if (Array.isArray(urlTemp)) {
-          tagArray[i + 1] = urlTemp[urlTemp.length - 2] + urlTemp[urlTemp.length - 1];
+          tagArray.push(urlTemp[urlTemp.length - 2] + urlTemp[urlTemp.length - 1]);
         }
       }
     }
@@ -119,7 +120,7 @@ var tinyosf = {
   },
   timestampsToHMS: function (now, starttimestamp) {
     "use strict";
-    var time = parseInt(now, 10) - parseInt(starttimestamp, 10),
+    var time = parseFloat(now) - parseFloat(starttimestamp),
       hours,
       minutes,
       seconds,
@@ -130,10 +131,10 @@ var tinyosf = {
     seconds = time - (hours * 3600) - (minutes * 60);
     returntime += (hours < 10) ? '0' + hours + ':' : hours + ':';
     returntime += (minutes < 10) ? '0' + minutes + ':' : minutes + ':';
-    returntime += (seconds < 10) ? '0' + seconds : seconds;
+    returntime += (seconds < 10) ? '0' + seconds.toFixed(3) : seconds.toFixed(3);
     return returntime;
   },
-  HMSToTimeInt: function (hms) {
+  HMSToTimeFloat: function (hms) {
     "use strict";
     var time = 0,
       timeArray,
@@ -144,9 +145,16 @@ var tinyosf = {
     }
     timeArray = regex.exec(hms.trim());
     if (timeArray !== null) {
+      if (timeArray[5] === undefined) {
+        timeArray[5] = '000';
+      } else {
+        timeArray[5] = timeArray[5] + '000';
+        timeArray[5] = timeArray[5].substr(1, 3);
+      }
       time += parseInt(timeArray[2], 10) * 3600;
       time += parseInt(timeArray[3], 10) * 60;
       time += parseInt(timeArray[4], 10);
+      time += parseFloat('0.' + timeArray[5]);
     } else {
       return undefined;
     }
@@ -220,11 +228,11 @@ var tinyosf = {
           timeHMS = tinyosf.timestampsToHMS(osfTime, osfFirstTS);
           timeSec = osfTime - osfFirstTS;
         } else if (/((\d+\u003A)?\d+\u003A\d+(\u002E\d+)?)/.test(osfTime)) {
+          timeSec = tinyosf.HMSToTimeFloat(osfTime);
+          timeHMS = tinyosf.TimeIntToHMS(timeSec);
           if (osfFirstHMS === undefined) {
             osfFirstHMS = osfTime;
           }
-          timeHMS = osfTime;
-          timeSec = tinyosf.HMSToTimeInt(osfTime);
         } else {
           timeHMS = false;
           timeSec = false;
@@ -348,7 +356,7 @@ var tinyosf = {
  * http://simon.waldherr.eu/license/mit/
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.3.5
+ * Version: 0.3.6
  */
 
 /*jslint browser: true, white: true, indent: 2, plusplus: true */
@@ -382,7 +390,7 @@ var osfExportTemp, osfExportModules = {
       }
     }
     if (osfItem.tags.indexOf('chapter') !== -1) {
-      line = '<h2>' + line + ' <small>(' + osfItem.timeHMS + ')</small></h2>';
+      line = '<h2>' + line + ' <small>(' + osfItem.timeHMS.substr(0, 8) + ')</small></h2>';
       parsed = line;
     } else {
       parsed = line + '; ';
@@ -409,7 +417,7 @@ var osfExportTemp, osfExportModules = {
       }
     }
     if (osfItem.tags.indexOf('chapter') !== -1) {
-      line = '<h2>' + line + ' <small>(' + osfItem.timeHMS + ')</small></h2>';
+      line = '<h2>' + line + ' <small>(' + osfItem.timeHMS.substr(0, 8) + ')</small></h2>';
       parsed = line;
     } else {
       parsed = line + '; ';
@@ -457,7 +465,7 @@ var osfExportTemp, osfExportModules = {
       for (i = 0; i < osfItem.rank.prev; i += 1) {
         derank += '</ol>';
       }
-      line = derank + '<h' + (osfItem.rank.curr + 2) + '><span>' + osfItem.timeHMS + '</span> ' + line + '</h' + (osfItem.rank.curr + 2) + '>';
+      line = derank + '<h' + (osfItem.rank.curr + 2) + '><span>' + osfItem.timeHMS.substr(0, 8) + '</span> ' + line + '</h' + (osfItem.rank.curr + 2) + '>';
       parsed = line;
     } else {
       if (osfItem.iteminfo.afterChapter === 1) {
@@ -508,7 +516,7 @@ var osfExportTemp, osfExportModules = {
       for (i = 0; i < osfItem.rank.curr; i += 1) {
         rank += '#';
       }
-      line = '\n#' + rank + line + ' ```' + osfItem.timeHMS + '```  ';
+      line = '\n#' + rank + line + ' ```' + osfItem.timeHMS.substr(0, 8) + '```  ';
       parsed = line;
     } else {
       //item is no chapter
@@ -648,21 +656,27 @@ var osfExportTemp, osfExportModules = {
   },
   osf: function (osfItem, status) {
     "use strict";
-    var line = '';
+    var line = '', rank = 0;
     if (status !== undefined) {
       return '';
     }
     if (typeof osfItem.timeSec === 'number') {
       line += osfItem.timeHMS + ' ';
     }
+    for (rank = 0; rank < osfItem.osfline[6]; rank += 1) {
+      line += '-';
+    }
+    if (rank !== 0) {
+      line += ' ';
+    }
     line += osfItem.osftext;
     if (osfItem.url !== false) {
       line += ' <' + osfItem.url + '>';
     }
     if (osfItem.tags.length === 1) {
-      line += ' #' + osfItem.tags;
+      line += ' #' + osfItem.tags[0];
     } else if (osfItem.tags.length > 1) {
-      line += osfItem.tags.join(' #');
+      line += ' #'+osfItem.tags.join(' #');
     }
     return line + '\n';
   },

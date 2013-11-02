@@ -6,7 +6,7 @@
  * http://simon.waldherr.eu/license/mit/
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.3.5
+ * Version: 0.3.6
  */
 
 /*jslint browser: true, white: true, indent: 2, plusplus: true */
@@ -40,7 +40,7 @@ var osfExportTemp, osfExportModules = {
       }
     }
     if (osfItem.tags.indexOf('chapter') !== -1) {
-      line = '<h2>' + line + ' <small>(' + osfItem.timeHMS + ')</small></h2>';
+      line = '<h2>' + line + ' <small>(' + osfItem.timeHMS.substr(0, 8) + ')</small></h2>';
       parsed = line;
     } else {
       parsed = line + '; ';
@@ -67,7 +67,7 @@ var osfExportTemp, osfExportModules = {
       }
     }
     if (osfItem.tags.indexOf('chapter') !== -1) {
-      line = '<h2>' + line + ' <small>(' + osfItem.timeHMS + ')</small></h2>';
+      line = '<h2>' + line + ' <small>(' + osfItem.timeHMS.substr(0, 8) + ')</small></h2>';
       parsed = line;
     } else {
       parsed = line + '; ';
@@ -115,7 +115,7 @@ var osfExportTemp, osfExportModules = {
       for (i = 0; i < osfItem.rank.prev; i += 1) {
         derank += '</ol>';
       }
-      line = derank + '<h' + (osfItem.rank.curr + 2) + '><span>' + osfItem.timeHMS + '</span> ' + line + '</h' + (osfItem.rank.curr + 2) + '>';
+      line = derank + '<h' + (osfItem.rank.curr + 2) + '><span>' + osfItem.timeHMS.substr(0, 8) + '</span> ' + line + '</h' + (osfItem.rank.curr + 2) + '>';
       parsed = line;
     } else {
       if (osfItem.iteminfo.afterChapter === 1) {
@@ -166,7 +166,7 @@ var osfExportTemp, osfExportModules = {
       for (i = 0; i < osfItem.rank.curr; i += 1) {
         rank += '#';
       }
-      line = '\n#' + rank + line + ' ```' + osfItem.timeHMS + '```  ';
+      line = '\n#' + rank + line + ' ```' + osfItem.timeHMS.substr(0, 8) + '```  ';
       parsed = line;
     } else {
       //item is no chapter
@@ -277,7 +277,7 @@ var osfExportTemp, osfExportModules = {
       return '';
     }
     if (osfItem.tags.indexOf('chapter') !== -1) {
-      return osfItem.timeHMS + '.000 ' + osfItem.osftext + '\n';
+      return osfItem.timeHMS + ' ' + osfItem.osftext + '\n';
     }
     return '';
   },
