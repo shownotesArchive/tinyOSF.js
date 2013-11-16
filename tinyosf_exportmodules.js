@@ -265,7 +265,7 @@ var osfExportTemp, osfExportModules = {
       timeOffset++;
       itemTime = osfItem.timeSecLast + timeOffset;
     }
-    parsed = 'M' + osfExportTemp + ',' + line + ' ' + tinyosf.buildTags(osfItem.tags, 0, false) + ',' + tinyosf.TimeIntToHMS(itemTime) + ":0," + ",";
+    parsed = 'M' + osfExportTemp + ',"' + line + ' ' + tinyosf.buildTags(osfItem.tags, 0, false) + '",' + tinyosf.TimeIntToHMS(itemTime) + ":0," + ",";
     if (osfItem.tags.indexOf('chapter') !== -1) {
       parsed += ',DD0F22';
     } else {
