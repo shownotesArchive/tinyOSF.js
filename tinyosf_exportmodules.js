@@ -246,7 +246,7 @@ var osfExportTemp, osfExportModules = {
       return '';
     }
     if (osfItem.url !== false) {
-      line = osfItem.osftext + ' &lt;' + osfItem.url + '&gt;';
+      line = osfItem.osftext + ' <' + osfItem.url + '>';
     } else {
       line = osfItem.osftext;
     }
