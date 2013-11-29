@@ -36,7 +36,7 @@
     "podcast"
   ],
   "license": "MIT",
-  "main": "tinyosf.js",
+  "main": "dist/tinyosf.js",
   "maintainers": [
     {
       "email": "contact@simonwaldherr.de",
