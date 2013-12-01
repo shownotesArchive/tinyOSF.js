@@ -70,6 +70,8 @@ var tinyosf = {
           tagArray.push('image');
         } else if (tagTemp === 'q') {
           tagArray.push('quote');
+        } else if (tagTemp === 'r') {
+          tagArray.push('revision');
         }
       } else if (tagTemp.length > 2) {
         tagArray.push(tagTemp);
