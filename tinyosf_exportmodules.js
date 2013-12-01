@@ -347,3 +347,7 @@ var osfExportTemp, osfExportModules = {
     return osfExportModules.markdown(osfItem, status);
   }
 };
+
+if(typeof module !== "undefined" && module.exports != undefined) {
+  module.exports.osfExportModules = osfExportModules;
+}

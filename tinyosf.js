@@ -348,3 +348,7 @@ var tinyosf = {
     return parsed;
   }
 };
+
+if(typeof module !== "undefined" && module.exports != undefined) {
+  module.exports.tinyosf = tinyosf;
+}
