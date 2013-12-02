@@ -176,11 +176,17 @@ var tinyosf = {
   },
   htmlencode: function (string) {
     "use strict";
-    var div = document.createElement('div');
-    div.appendChild(document.createTextNode(string));
-    string = div.innerHTML;
-    div = undefined;
-    return string;
+    if(typeof document === "undefined") {
+      // we're in node
+      return require('htmlencode').htmlEncode(string);
+    } else {
+      // we're in the browser
+      var div = document.createElement('div');
+      div.appendChild(document.createTextNode(string));
+      string = div.innerHTML;
+      div = undefined;
+      return string;
+    }
   },
   Parser: function (string) {
     "use strict";

@@ -26,6 +26,9 @@
     "grunt-contrib-uglify": ">= 0.2.2",
     "gzip-js": ">= 0.3.1"
   },
+  "dependencies": {
+    "htmlencode": "0.0.3"
+  },
   "homepage": "https://github.com/shownotes/tinyOSF.js",
   "keywords": [
     "osf",
