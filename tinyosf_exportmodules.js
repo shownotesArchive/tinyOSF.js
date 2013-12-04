@@ -9,7 +9,7 @@
  * Version: 0.3.7
  */
 
-/*jslint browser: true, white: true, indent: 2, plusplus: true */
+/*jslint browser: true, node: true, white: true, indent: 2, plusplus: true */
 /*global tinyosf */
 
 //these functions are only examples, please consider making your own
@@ -348,6 +348,6 @@ var osfExportTemp, osfExportModules = {
   }
 };
 
-if(typeof module !== "undefined" && module.exports != undefined) {
+if (typeof module !== "undefined" && module.exports !== undefined) {
   module.exports.osfExportModules = osfExportModules;
 }

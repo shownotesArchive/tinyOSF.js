@@ -9,7 +9,7 @@
  * Version: 0.3.7
  */
 
-/*jslint browser: true, regexp: true, indent: 2 */
+/*jslint browser: true, node: true, regexp: true, indent: 2 */
 
 if (!String.prototype.trim) {
   String.prototype.trim = function () {
@@ -176,17 +176,16 @@ var tinyosf = {
   },
   htmlencode: function (string) {
     "use strict";
-    if(typeof document === "undefined") {
+    if (document === undefined) {
       // we're in node
       return require('htmlencode').htmlEncode(string);
-    } else {
-      // we're in the browser
-      var div = document.createElement('div');
-      div.appendChild(document.createTextNode(string));
-      string = div.innerHTML;
-      div = undefined;
-      return string;
     }
+    // we're in the browser
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(string));
+    string = div.innerHTML;
+    div = undefined;
+    return string;
   },
   Parser: function (string) {
     "use strict";
@@ -355,6 +354,6 @@ var tinyosf = {
   }
 };
 
-if(typeof module !== "undefined" && module.exports != undefined) {
+if (typeof module !== "undefined" && module.exports !== undefined) {
   module.exports.tinyosf = tinyosf;
 }
