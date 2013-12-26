@@ -24,6 +24,15 @@
 
 div a:hover { text-decoration: underline }
 
+.osf_rss,
+.osf_feed,
+.osf_link,
+.osf_shopping,
+.osf_quote,
+.osf_glossary,
+.osf_podcast,
+.osf_video,
+.osf_wiki,
 .osf_amazon,
 .osf_applecom,
 .osf_appnet,
@@ -31,22 +40,16 @@ div a:hover { text-decoration: underline }
 .osf_flattr,
 .osf_flattrcom,
 .osf_twitter,
-.osf_wiki,
 .osf_wikipediaorg,
 .osf_youtube,
 .osf_youtubecom,
-.osf_youtu.be,
-.osf_glossary,
 .osf_googlede,
 .osf_googlecom,
 .osf_google,
-.osf_link,
 .osf_heisede,
-.osf_shopping,
 .osf_amazonde,
 .osf_amazoncom,
 .osf_paypalcom,
-.osf_video,
 .osf_esaint,
 .osf_dlrde,
 .osf_wiktionaryorg,
@@ -65,16 +68,28 @@ div a:hover { text-decoration: underline }
 .osf_yahoocom,
 .osf_xingcom,
 .osf_xenimde,
-.osf_quote,
-.osf_rss,
-.osf_feed,
 .osf_crefm,
 .osf_einschlafen-podcastde,
+.osf_podunioncom,
+.osf_1337kulturde,
+.osf_binaergewitterde,
+.osf_nasagov,
+.osf_die-sondersendungde,
+.osf_wikigeeksde,
+.osf_helmholtzde,
+.osf_famous-projectorg,
+.osf_nsagov,
+.osf_thenextwebcom,
+.osf_achtungabschriftde,
+.osf_auphoniccom,
+.osf_creativecommonsorg,
+.osf_cccde,
+.osf_golemde,
+.osf_selfcssorg,
 .osf_firtzorg,
 .osf_hoersuppede,
 .osf_raumzeit-podcastde,
-.osf_wrintde,
-.osf_podcast {
+.osf_wrintde {
   background-repeat: no-repeat;
   background-position: 0 center;
   padding-left: 18px;
@@ -172,6 +187,39 @@ div a:hover { text-decoration: underline }
 
 .osf_raumzeit-podcastde { background-image: url('./img/bwi/raumzeit.png'); }
 
-.osf_wrintde { background-image: url('./img/bwi/wrin.png'); }
+.osf_wrintde { background-image: url('./img/bwi/wrint.png'); }
+
+.osf_podunioncom { background-image: url('./img/bwi/podunion.png'); }
+
+.osf_1337kulturde { background-image: url('./img/bwi/1337kultur.png'); }
+
+.osf_binaergewitterde { background-image: url('./img/bwi/binaergewitter.png'); }
+
+.osf_nasagov { background-image: url('./img/bwi/nasa.png'); }
+
+.osf_die-sondersendungde { background-image: url('./img/bwi/sondersendung.png'); }
+
+.osf_wikigeeksde { background-image: url('./img/bwi/wikigeeks.png'); }
+
+.osf_helmholtzde { background-image: url('./img/bwi/helmholtz.png'); }
+
+.osf_famous-projectorg { background-image: url('./img/bwi/famous02.png'); }
+
+.osf_nsagov { background-image: url('./img/bwi/nsa.png'); }
+
+.osf_thenextwebcom { background-image: url('./img/bwi/thenextweb.png'); }
+
+.osf_achtungabschriftde { background-image: url('./img/bwi/achtungabschrift.png'); }
+
+.osf_auphoniccom { background-image: url('./img/bwi/auphonic.png'); }
+
+.osf_cclicense,
+.osf_creativecommonsorg { background-image: url('./img/bwi/cc.png'); }
+
+.osf_cccde { background-image: url('./img/bwi/ccc.png'); }
+
+.osf_golemde { background-image: url('./img/bwi/golem.png'); }
+
+.osf_selfcssorg { background-image: url('./img/bwi/selfcss.png'); }
 
 .osf_revision { color: red; }
