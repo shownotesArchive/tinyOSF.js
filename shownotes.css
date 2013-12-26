@@ -33,6 +33,7 @@ div a:hover { text-decoration: underline }
 .osf_podcast,
 .osf_video,
 .osf_wiki,
+.osf_arduinocc,
 .osf_amazon,
 .osf_applecom,
 .osf_appnet,
@@ -64,6 +65,7 @@ div a:hover { text-decoration: underline }
 .osf_tumblrcom,
 .osf_threemach,
 .osf_soundcloudcom,
+.osf_slashdotorg,
 .osf_stackoverflow,
 .osf_yahoocom,
 .osf_xingcom,
@@ -84,6 +86,7 @@ div a:hover { text-decoration: underline }
 .osf_auphoniccom,
 .osf_creativecommonsorg,
 .osf_cccde,
+.osf_raspberrypiorg,
 .osf_golemde,
 .osf_selfcssorg,
 .osf_firtzorg,
@@ -120,6 +123,12 @@ div a:hover { text-decoration: underline }
 .osf_amazoncom { background-image: url('./img/bwi/amazon.png'); }
 
 .osf_shopping { background-image: url('./img/bwi/shopping.png'); }
+
+.osf_arduinocc { background-image: url('./img/bwi/arduino.png'); }
+
+.osf_raspberrypiorg { background-image: url('./img/bwi/raspberry.png'); }
+
+.osf_slashdotorg { background-image: url('./img/bwi/slashdot.png'); }
 
 .osf_rss,
 .osf_feed { background-image: url('./img/bwi/rss.png'); }
