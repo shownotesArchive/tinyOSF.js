@@ -9,7 +9,7 @@
  * Version: 0.3.7
  */
 
-/*jslint browser: true, regexp: true, indent: 2 */
+/*jslint browser: true, node: true, regexp: true, indent: 2 */
 
 if (!String.prototype.trim) {
   String.prototype.trim = function () {
@@ -70,6 +70,8 @@ var tinyosf = {
           tagArray.push('image');
         } else if (tagTemp === 'q') {
           tagArray.push('quote');
+        } else if (tagTemp === 'r') {
+          tagArray.push('revision');
         }
       } else if (tagTemp.length > 2) {
         tagArray.push(tagTemp);
@@ -174,6 +176,11 @@ var tinyosf = {
   },
   htmlencode: function (string) {
     "use strict";
+    if (document === undefined) {
+      // we're in node
+      return require('htmlencode').htmlEncode(string);
+    }
+    // we're in the browser
     var div = document.createElement('div');
     div.appendChild(document.createTextNode(string));
     string = div.innerHTML;
@@ -347,6 +354,10 @@ var tinyosf = {
   }
 };
 
+if (typeof module !== "undefined" && module.exports !== undefined) {
+  module.exports.tinyosf = tinyosf;
+}
+
 
 /*
  * tinyosf_exportmodules.js
@@ -359,7 +370,7 @@ var tinyosf = {
  * Version: 0.3.7
  */
 
-/*jslint browser: true, white: true, indent: 2, plusplus: true */
+/*jslint browser: true, node: true, white: true, indent: 2, plusplus: true */
 /*global tinyosf */
 
 //these functions are only examples, please consider making your own
@@ -697,3 +708,7 @@ var osfExportTemp, osfExportModules = {
     return osfExportModules.markdown(osfItem, status);
   }
 };
+
+if (typeof module !== "undefined" && module.exports !== undefined) {
+  module.exports.osfExportModules = osfExportModules;
+}
