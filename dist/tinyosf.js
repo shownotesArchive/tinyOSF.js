@@ -87,7 +87,7 @@ var tinyosf = {
           urlTemp = urlTemp[0].split('.');
         }
         if (Array.isArray(urlTemp)) {
-          tagArray.push(urlTemp[urlTemp.length - 2] + urlTemp[urlTemp.length - 1]);
+          tagArray.push(urlTemp[urlTemp.length - 2].replace(/[^\w\d]/g, '') + urlTemp[urlTemp.length - 1]);
         }
       }
     }
