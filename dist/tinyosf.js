@@ -191,19 +191,25 @@ var tinyosf = {
     "use strict";
     var osfArray, i = 0,
       splitAt = false,
-      output = [],
+      output = {},
       rank,
       osfTime,
       timeHMS,
       timeSec,
       osfFirstTS,
       osfFirstHMS,
+      header,
+      helper,
+      info = {},
       osfRegex = /(^([(\d{8,})((\d+\u003A)?\d+\u003A\d+(\u002E\d+)?)]*)?\h*([^#<>\n\v]+) *(\u003C[\S]*\u003E)?((\s*\u0023[\S]* ?)*)\n*)/gmi;
     //about this Regex:
     //^([(\d{8,})(\u002D+)(\d+\u003A\d+\u003A\d+(\u002E\d*)?)]*)?   => 1234567890 or - or 00:01:02[.000] or nothing at the beginning of the line
     //([^#<>\n\v]+)                                                 => a wide range of chars (excluding #,<,> and new lines (vertical whitespace))
     //(\u003C[\S]*\u003E)?                                          => a string beginning with < and ending with > containing no whitespace or nothing
     //((\s*\u0023[\S]* ?)*)                                         => a string beginning with a whitespace, then a # and then some not whitespace chars or nothing
+
+    output.items = [];
+    output.info = {};
 
     if (string.indexOf('/HEADER') !== -1) {
       splitAt = '/HEADER';
@@ -212,12 +218,30 @@ var tinyosf = {
     }
 
     if (typeof splitAt === 'string') {
+      header = string.split(splitAt, 2)[0].trim();
       string = string.split(splitAt, 2)[1].trim();
     } else {
-      splitAt = string.split(/([(\d{8,})((\d+\u003A)?\d+\u003A\d+(\u002E\d+)?)]+\s*\S)/i, 3);
+      splitAt = string.split(/([(\d{8,})((\d+\u003A)?\d+\u003A\d+(\u002E\d+)?)]+\s*\S{5,})/i, 2);
       splitAt = string.indexOf(splitAt[1]);
+      header = string.slice(0, splitAt);
       string = string.slice(splitAt);
     }
+
+    output.info.ready = false;
+    output.info.header = false;
+    output.info.compatible = false;
+    output.info.podcast = false;
+    output.info.episode = false;
+    output.info.title = false;
+    output.info.chapters = 0;
+    output.info.revision = 0;
+    output.info.revision = string.match(/( \#r | \#revision | \#r\n| \#revision\n)/gmi);
+    output.info.revision = (output.info.revision === null) ? 0 : output.info.revision.length;
+    output.info.ready = /\n *ready: ?(false|no|not|nicht)/gmi.test(header) ? false : (output.info.revision > 0) ? false : true;
+    output.info.podcast = /\n *podcast: ?\w{3,}/gmi.test(header);
+    output.info.episode = /\n *episode: ?0*\d+/gmi.test(header);
+    output.info.title = /\n *(episode)?tit(le|el): *[\w\d\-öäüß ]{5,}/gmi.test(header);
+    output.info.header = (header.length > 23) ? output.info.podcast ? output.info.episode ? output.info.title : false : false : false;
 
     string = '\n' + string.replace(/\s+/, ' ') + '\n';
     osfArray = osfRegex.exec(string);
@@ -244,6 +268,9 @@ var tinyosf = {
           timeHMS = false;
           timeSec = false;
         }
+        if (osfArray[5] !== "") {
+          output.info.chapters += 1;
+        }
 
         osfArray[1] = timeHMS; //HH:MM:SS
         osfArray[2] = timeSec; //Seconds
@@ -259,7 +286,7 @@ var tinyosf = {
           }
         }
         osfArray[3] = (' ' + tinyosf.htmlencode(osfArray[3]) + ' ').toString().replace(' "', ' &#8222;').replace('" ', '&#8220; ').trim();
-        output[i] = osfArray;
+        output.items[i] = osfArray;
         i += 1;
       }
       osfArray = osfRegex.exec(string);
@@ -273,6 +300,9 @@ var tinyosf = {
     [i][5] = Tags
     [i][6] = Rank
     */
+
+    output.info.compatible = (output.info.chapters > 3) ? true : (output.items.length > 23) ? true : false;
+
     return output;
   },
   Export: function (osf, modefunction) {
@@ -290,11 +320,13 @@ var tinyosf = {
       parsed = '',
       ranks = {};
 
+    console.log(osf);
+
     parsed += modefunction('', 'pre');
     iteminfo.afterChapter = 0;
     iteminfo.nextisChapter = false;
-    for (i = 0; i < osf.length; i += 1) {
-      osfline = osf[i];
+    for (i = 0; i < osf.items.length; i += 1) {
+      osfline = osf.items[i];
       timeHMS = osfline[1];
       timeSec = osfline[2];
       osftext = osfline[3];
@@ -310,29 +342,29 @@ var tinyosf = {
       } else {
         iteminfo.afterChapter += 1;
       }
-      if (osf[i + 1] !== undefined) {
-        if (tinyosf.extractTags(osf[i + 1][5], false).indexOf('chapter') !== -1) {
+      if (osf.items[i + 1] !== undefined) {
+        if (tinyosf.extractTags(osf.items[i + 1][5], false).indexOf('chapter') !== -1) {
           iteminfo.nextisChapter = true;
         } else {
           iteminfo.nextisChapter = false;
         }
       }
 
-      ranks.prev = osf[i - 1] !== undefined ? osf[i - 1][6] : 0;
-      ranks.curr = osf[i][6];
-      ranks.next = osf[i + 1] !== undefined ? osf[i + 1][6] : 0;
+      ranks.prev = osf.items[i - 1] !== undefined ? osf.items[i - 1][6] : 0;
+      ranks.curr = osf.items[i][6];
+      ranks.next = osf.items[i + 1] !== undefined ? osf.items[i + 1][6] : 0;
 
-      if ((osf[i][2] !== undefined) && (osf[i][2] !== false)) {
-        lastTime = osf[i][2];
+      if ((osf.items[i][2] !== undefined) && (osf.items[i][2] !== false)) {
+        lastTime = osf.items[i][2];
       }
 
-      if (osf[i + 1] !== undefined) {
-        if ((osf[i + 1][2] !== undefined) && (osf[i + 1][2] !== false)) {
-          nextTime = osf[i + 1][2];
+      if (osf.items[i + 1] !== undefined) {
+        if ((osf.items[i + 1][2] !== undefined) && (osf.items[i + 1][2] !== false)) {
+          nextTime = osf.items[i + 1][2];
         } else {
           nextTime = lastTime;
         }
-        //nextTime = osf[i+1] !== undefined ? osf[i+1][2] : undefined;
+        //nextTime = osf.items[i+1] !== undefined ? osf.items[i+1][2] : undefined;
       }
       if ((osfline !== undefined) && (modefunction !== undefined)) {
         parsed += modefunction({
@@ -706,6 +738,9 @@ var osfExportTemp, osfExportModules = {
   md: function (osfItem, status) {
     "use strict";
     return osfExportModules.markdown(osfItem, status);
+  },
+  stats: function (osfItem, status) {
+    console.log(osfItem);
   }
 };
 
