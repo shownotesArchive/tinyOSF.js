@@ -345,6 +345,9 @@ var osfExportTemp, osfExportModules = {
   md: function (osfItem, status) {
     "use strict";
     return osfExportModules.markdown(osfItem, status);
+  },
+  stats: function (osfItem, status) {
+    console.log(osfItem);
   }
 };
 

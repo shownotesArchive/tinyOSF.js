@@ -114,6 +114,8 @@ function generateShownotes() {
     mode = 'osf';
   } else if (window.location.hash.indexOf('json') !== -1) {
     mode = 'json';
+  } else if (window.location.hash.indexOf('stats') !== -1) {
+    mode = 'stats';
   } else {
     mode = 'html';
   }
@@ -145,7 +147,10 @@ function generateShownotes() {
   if (mode === 'diff') {
     shownotes = diffOSF();
   } else if (mode === 'json') {
-    shownotes = JSON.stringify(tinyosf.Parser(tinyosf.htmldecode(document.getElementById('OSF').innerHTML)),  null,  '  ');
+    shownotes = JSON.stringify(tinyosf.Parser(tinyosf.htmldecode(document.getElementById('OSF').innerHTML)).items, null,  '  ');
+  } else if (mode === 'stats') {
+    shownotes = JSON.stringify(tinyosf.Parser(tinyosf.htmldecode(document.getElementById('OSF').innerHTML)).info, null,  '  ');
+    //shownotes = JSON.stringify(tinyosf.Export(tinyosf.Parser(tinyosf.htmldecode(document.getElementById('OSF').innerHTML)), osfExportModules[mode]), null,  '  ');
   } else {
     shownotes = tinyosf.Export(tinyosf.Parser(tinyosf.htmldecode(document.getElementById('OSF').innerHTML)), osfExportModules[mode]);
   }
