@@ -22,6 +22,13 @@ module.exports = function(grunt) {
         dest: './dist/tinyosf.js'
       }
     },
+    jshint: {
+      files: ['./dist/tinyosf.js'],
+      // configure JSHint (documented at http://www.jshint.com/docs/)
+      options: {
+        globals: {}
+      }
+    },
     uglify: {
       options: {
         banner: '/* * * * * * * * * *\n' +
@@ -38,6 +45,13 @@ module.exports = function(grunt) {
         }
       }
     },
+    cssmin: {
+      combine: {
+        files: {
+          './dist/shownotes.css': ['./shownotes.css']
+        }
+      }
+    },
     compress: {
       main: {
         options: {
@@ -51,6 +65,8 @@ module.exports = function(grunt) {
   });
   grunt.loadNpmTasks("grunt-compare-size");
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.registerTask('default', ['concat', 'uglify', 'compare_size']);
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.registerTask('default', ['concat', 'jshint', 'uglify', 'cssmin', 'compare_size']);
 };
