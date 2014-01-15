@@ -6,7 +6,7 @@
  * http://simon.waldherr.eu/license/mit/
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.3.7
+ * Version: 0.3.8
  */
 
 /*jslint browser: true, node: true, regexp: true, indent: 2 */
@@ -199,8 +199,6 @@ var tinyosf = {
       osfFirstTS,
       osfFirstHMS,
       header,
-      helper,
-      info = {},
       osfRegex = /(^([(\d{8,})((\d+\u003A)?\d+\u003A\d+(\u002E\d+)?)]*)?\h*([^#<>\n\v]+) *(\u003C[\S]*\u003E)?((\s*\u0023[\S]* ?)*)\n*)/gmi;
     //about this Regex:
     //^([(\d{8,})(\u002D+)(\d+\u003A\d+\u003A\d+(\u002E\d*)?)]*)?   => 1234567890 or - or 00:01:02[.000] or nothing at the beginning of the line
@@ -319,8 +317,6 @@ var tinyosf = {
       iteminfo = {},
       parsed = '',
       ranks = {};
-
-    console.log(osf);
 
     parsed += modefunction('', 'pre');
     iteminfo.afterChapter = 0;
