@@ -235,11 +235,11 @@ var tinyosf = {
     output.info.revision = 0;
     output.info.revision = string.match(/( \#r | \#revision | \#r\n| \#revision\n)/gmi);
     output.info.revision = (output.info.revision === null) ? 0 : output.info.revision.length;
-    output.info.ready = /\n *ready: ?(false|no|not|nicht)/gmi.test(header) ? false : (output.info.revision > 0) ? false : true;
-    output.info.podcast = /\n *podcast: ?\w{3,}/gmi.test(header);
-    output.info.episode = /\n *episode: ?0*\d+/gmi.test(header);
-    output.info.title = /\n *(episode)?tit(le|el): *[\w\d\-öäüß ]{5,}/gmi.test(header);
-    output.info.header = (header.length > 23) ? output.info.podcast ? output.info.episode ? output.info.title : false : false : false;
+    output.info.ready = /^ *ready: ?(false|no|not|nicht)/gmi.test(header) ? false : (output.info.revision > 0) ? false : true;
+    output.info.podcast = /^ *podcast: ?\w{3,}/gmi.test(header);
+    output.info.episode = /^ *episode: ?0*\d+/gmi.test(header);
+    output.info.title = /^ *(episode)?tit(le|el): *[\w\d\-öäüß ]{5,}/gmi.test(header);
+    output.info.header = (header.length > 23) ? output.info.podcast ? output.info.episode ? output.info.title ? header.length : false : false : false : false;
 
     string = '\n' + string.replace(/\s+/, ' ') + '\n';
     osfArray = osfRegex.exec(string);
@@ -266,7 +266,7 @@ var tinyosf = {
           timeHMS = false;
           timeSec = false;
         }
-        if (osfArray[5] !== "") {
+        if (osfArray[5].indexOf('#c') !== -1) {
           output.info.chapters += 1;
         }
 
