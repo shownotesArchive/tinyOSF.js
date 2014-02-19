@@ -253,3 +253,6 @@ div a:hover { text-decoration: underline }
 .osf_trollface { background-image: url('./img/bwi/trollface.png');}
 
 .osf_revision { display: none; }
+
+.osf_stats { display: none; }
+.osf_stat { display: none; }
