@@ -1,6 +1,7 @@
 /* https://github.com/SimonWaldherr/wp-osf-shownotes/blob/master/static/style_three.css 0.4.2 */
 
-.osf_chaptertime {
+
+.osf_stats { .osf_chaptertime {
   margin-left: 10px;
   font-family: monospace;
   font-weight: 300;
@@ -255,3 +256,5 @@ div a:hover { text-decoration: underline }
 .osf_revision { display: none; }
 
 .osf_stats { display: none; }
+
+.osf_stats { background-image: url('./img/bwi/paragraph.png');}
