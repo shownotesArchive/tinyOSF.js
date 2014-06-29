@@ -35,6 +35,8 @@ div a:hover { text-decoration: underline }
 .osf_podcast,
 .osf_video,
 .osf_wiki,
+.osf_osi,
+.osf_opensource,
 .osf_arduinocc,
 .osf_amazon,
 .osf_applecom,
@@ -72,6 +74,12 @@ div a:hover { text-decoration: underline }
 .osf_yahoocom,
 .osf_xingcom,
 .osf_xenimde,
+.osf_anycast,
+.osf_bitloveorg,
+.osf_podbede,
+.osf_podcascriptionde,
+.osf_podpottde,
+.osf_reliveradiode,
 .osf_crefm,
 .osf_einschlafenpodcastde,
 .osf_podunioncom,
@@ -111,6 +119,18 @@ div a:hover { text-decoration: underline }
 .osf_podcast { background-image: url('./img/bwi/podcast.png'); }
 
 .osf_absradiode { background-image: url('./img/bwi/absradio.png' ); }
+
+.osf_anycast { background-image: url('./img/bwi/anycast.png' ); }
+
+.osf_bitloveorg { background-image: url('./img/bwi/bitlove.png' ); }
+
+.osf_podbede { background-image: url('./img/bwi/podbe.png' ); }
+
+.osf_podcascriptionde { background-image: url('./img/bwi/podcascription.png' ); }
+
+.osf_podpottde { background-image: url('./img/bwi/podpott.png' ); }
+
+.osf_reliveradiode { background-image: url('./img/bwi/reliveradio.png' ); }
 
 .osf_staatsbuergerkundepodcastde { background-image: url('./img/bwi/staatsbuergerkunde.png' ); }
 
@@ -191,6 +211,9 @@ div a:hover { text-decoration: underline }
 .osf_imdbcom { background-image: url('./img/bwi/imdb.png'); }
 
 .osf_quote { background-image: url('./img/bwi/quote.png'); }
+
+.osf_osi,
+.osf_opensource { background-image: url('./img/bwi/osi.png'); }
 
 .osf_flickrcom { background-image: url('./img/bwi/flickr.png'); }
 
