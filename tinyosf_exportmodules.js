@@ -250,7 +250,7 @@ var osfExportTemp, osfExportModules = {
       return '';
     }
     if (osfItem.url !== false) {
-      line = osfItem.osftext + ' &lt;' + osfItem.url + '&gt;';
+      line = osfItem.osftext + ' <' + osfItem.url + '>';
     } else {
       line = osfItem.osftext;
     }
@@ -278,6 +278,7 @@ var osfExportTemp, osfExportModules = {
     }
     txt = line.trim() + ' ' + tinyosf.buildTags(osfItem.tags, 0, false);
     parsed = 'M' + osfExportTemp + ',' + txt.trim() + ',' + tinyosf.TimeIntToHMS(itemTime);
+
     if (osfItem.tags.indexOf('chapter') !== -1) {
       parsed += ',DD0F22';
     } else {
