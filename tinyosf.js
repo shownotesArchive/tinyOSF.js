@@ -1,12 +1,12 @@
 /*
  * tinyosf.js
  *
- * Copyright 2013, Simon Waldherr - http://simon.waldherr.eu/
+ * Copyright 2015, Simon Waldherr - http://simon.waldherr.eu/
  * Released under the MIT Licence
  * http://simon.waldherr.eu/license/mit/
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.3.8
+ * Version: 0.3.9
  */
 
 /*jslint browser: true, node: true, regexp: true, indent: 2 */

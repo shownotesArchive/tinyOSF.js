@@ -1,12 +1,12 @@
 /*
  * tinyosf.js
  *
- * Copyright 2013, Simon Waldherr - http://simon.waldherr.eu/
+ * Copyright 2015, Simon Waldherr - http://simon.waldherr.eu/
  * Released under the MIT Licence
  * http://simon.waldherr.eu/license/mit/
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.3.8
+ * Version: 0.3.9
  */
 
 /*jslint browser: true, node: true, regexp: true, indent: 2 */
@@ -390,12 +390,12 @@ if (typeof module !== "undefined" && module.exports !== undefined) {
 /*
  * tinyosf_exportmodules.js
  *
- * Copyright 2013, Simon Waldherr - http://simon.waldherr.eu/
+ * Copyright 2015, Simon Waldherr - http://simon.waldherr.eu/
  * Released under the MIT Licence
  * http://simon.waldherr.eu/license/mit/
  *
  * Github:  https://github.com/shownotes/tinyOSF.js/
- * Version: 0.3.8
+ * Version: 0.3.9
  */
 
 /*jslint browser: true, node: true, white: true, indent: 2, plusplus: true */
@@ -639,7 +639,7 @@ var osfExportTemp, osfExportModules = {
       return '';
     }
     if (osfItem.url !== false) {
-      line = osfItem.osftext + ' &lt;' + osfItem.url + '&gt;';
+      line = osfItem.osftext + ' <' + osfItem.url + '>';
     } else {
       line = osfItem.osftext;
     }
@@ -667,6 +667,7 @@ var osfExportTemp, osfExportModules = {
     }
     txt = line.trim() + ' ' + tinyosf.buildTags(osfItem.tags, 0, false);
     parsed = 'M' + osfExportTemp + ',' + txt.trim() + ',' + tinyosf.TimeIntToHMS(itemTime);
+
     if (osfItem.tags.indexOf('chapter') !== -1) {
       parsed += ',DD0F22';
     } else {

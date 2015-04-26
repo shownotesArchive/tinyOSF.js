@@ -31,4 +31,4 @@ document.getElementById('parsed').innerHTML = shownotes;
 
 ###Version
 
-0.3.8
+0.3.9
