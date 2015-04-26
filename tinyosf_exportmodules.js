@@ -14,6 +14,13 @@
 
 //these functions are only examples, please consider making your own
 
+if (!String.prototype.includes) {
+  String.prototype.includes = function() {
+    'use strict';
+    return (String.prototype.indexOf.apply(this, arguments) !== -1);
+  };
+}
+
 var osfExportTemp, osfExportModules = {
   html: function (osfItem, status) {
     "use strict";
@@ -233,10 +240,10 @@ var osfExportTemp, osfExportModules = {
   },
   reaper: function (osfItem, status) {
     "use strict";
-    var line, parsed, rank, i, itemTime, timeOffset = 0;
+    var line, parsed, rank, i, itemTime, txt, timeOffset = 0;
     if (status === 'pre') {
       osfExportTemp = 0;
-      return '#,Name,Start,End,Length,Color';
+      return 'Number,Name,Start,Color';
     }
     osfExportTemp += 1;
     if (status !== undefined) {
@@ -263,7 +270,14 @@ var osfExportTemp, osfExportModules = {
       timeOffset++;
       itemTime = osfItem.timeSecLast + timeOffset;
     }
-    parsed = 'M' + osfExportTemp + ',' + line + ' ' + tinyosf.buildTags(osfItem.tags, 0, false) + ',' + tinyosf.TimeIntToHMS(itemTime) + ":0," + ",";
+    if (line.includes("\"")) {
+      line = line.replace(/"/g, "\"\"");
+    }
+    if (line.includes(",")) {
+      line = '"' + line + '"';
+    }
+    txt = line.trim() + ' ' + tinyosf.buildTags(osfItem.tags, 0, false);
+    parsed = 'M' + osfExportTemp + ',' + txt.trim() + ',' + tinyosf.TimeIntToHMS(itemTime);
     if (osfItem.tags.indexOf('chapter') !== -1) {
       parsed += ',DD0F22';
     } else {
